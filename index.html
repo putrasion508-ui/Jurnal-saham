@@ -215,20 +215,25 @@ input,select{font-family:inherit;font-size:16px}
 .sheet{
   background:#fff;width:100%;max-width:680px;
   border-radius:22px 22px 0 0;
-  max-height:92vh;overflow-y:auto;
+  max-height:calc(92vh - var(--safe-top));
+  overflow-y:auto;
   transform:translateY(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
   padding-bottom:calc(20px + var(--safe-bot));
   -webkit-overflow-scrolling:touch;
 }
 .modal-bg.show .sheet{transform:translateY(0)}
-.sheet-handle{width:40px;height:4px;background:var(--abu-300);border-radius:3px;margin:10px auto 4px}
-.sheet-head{
-  position:sticky;top:0;background:#fff;z-index:2;
-  padding:8px 18px 14px;border-bottom:1px solid var(--garis);
-  display:flex;align-items:center;justify-content:space-between;
+.sheet-handle{width:40px;height:5px;background:var(--abu-300);border-radius:3px;margin:0 auto;
+  position:sticky;top:0;z-index:3;
+  margin-top:calc(10px + var(--safe-top));
 }
-.sheet-head h3{margin:0;font-size:17px;font-weight:700}
-.sheet-head .x{width:32px;height:32px;border-radius:50%;background:var(--abu-100);color:var(--abu-700);display:flex;align-items:center;justify-content:center;font-size:18px}
+.sheet-head{
+  position:sticky;top:calc(15px + var(--safe-top));background:#fff;z-index:2;
+  padding:6px 18px 14px;border-bottom:1px solid var(--garis);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.sheet-head h3{margin:0;font-size:17px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheet-head .x{width:36px;height:36px;flex:none;border-radius:50%;background:var(--abu-100);color:var(--abu-700);display:flex;align-items:center;justify-content:center;font-size:20px}
+.sheet-head .x:active{background:var(--abu-200)}
 .sheet-body{padding:16px 18px}
 
 /* ---------- FORM ---------- */
@@ -236,12 +241,23 @@ input,select{font-family:inherit;font-size:16px}
 .field label{display:block;font-size:12.5px;font-weight:600;color:var(--abu-700);margin-bottom:6px}
 .field .hint{font-size:11px;color:var(--abu-500);font-weight:400;margin-left:4px}
 .inp{
-  width:100%;padding:12px 13px;border:1.5px solid var(--abu-200);border-radius:11px;
+  width:100%;min-width:0;padding:12px 13px;border:1.5px solid var(--abu-200);border-radius:11px;
   background:var(--abu-50);color:var(--abu-900);transition:border .15s,background .15s;
+  -webkit-appearance:none;appearance:none;
 }
 .inp:focus{outline:none;border-color:var(--biru-500);background:#fff}
 .inp.err{border-color:var(--merah);background:var(--merah-bg)}
+/* input tanggal iOS: cegah lebar intrinsik yang menjebol grid */
+input[type="date"].inp{
+  min-width:0;width:100%;max-width:100%;
+  text-align:left;-webkit-appearance:none;appearance:none;
+  font-variant-numeric:tabular-nums;
+}
+input[type="date"].inp::-webkit-date-and-time-value{text-align:left;margin:0}
+input[type="date"].inp::-webkit-calendar-picker-indicator{margin-left:auto;padding-left:4px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.row2>.field{min-width:0}
+.row2>.field .inp{min-width:0}
 .field-err{font-size:11.5px;color:var(--merah);margin-top:5px;font-weight:500;display:none}
 .field-err.show{display:block}
 
@@ -285,20 +301,24 @@ input,select{font-family:inherit;font-size:16px}
 .lot-tool{flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:600;background:var(--abu-100);color:var(--abu-700);display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px solid transparent}
 .lot-tool:active{border-color:var(--biru-500);background:var(--biru-50)}
 .lot-tool small{font-size:9.5px;font-weight:500;opacity:.75}
-.lotcard{border:1.5px solid var(--abu-200);border-radius:12px;padding:11px 12px;margin-bottom:9px;transition:border .15s,background .15s}
+.lotcard{border:1.5px solid var(--abu-200);border-radius:12px;padding:12px;margin-bottom:9px;transition:border .15s,background .15s}
 .lotcard.picked{border-color:var(--biru-500);background:var(--biru-50)}
-.lotcard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.lotcard-date{font-size:12px;font-weight:600;color:var(--abu-900)}
-.lotcard-date small{display:block;font-size:10.5px;color:var(--abu-500);font-weight:400}
-.lotcard-pl{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.lotcard-mid{display:flex;gap:12px;font-size:11px;color:var(--abu-600);margin-bottom:9px;font-variant-numeric:tabular-nums}
-.lotcard-mid b{color:var(--abu-900)}
-.lot-qty{display:flex;align-items:center;gap:9px}
-.lot-qty label{font-size:11.5px;color:var(--abu-600);flex:1}
-.stepper{display:flex;align-items:center;border:1.5px solid var(--abu-200);border-radius:9px;overflow:hidden}
-.stepper button{width:32px;height:34px;font-size:17px;font-weight:600;color:var(--biru-700);background:var(--abu-50)}
+.lotcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.lotcard-date{font-size:12.5px;font-weight:700;color:var(--abu-900);min-width:0}
+.lotcard-date small{display:block;font-size:10.5px;color:var(--abu-500);font-weight:400;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lotcard-pl{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;flex:none}
+.lotcard-mid{display:flex;gap:0;font-size:11px;color:var(--abu-600);margin-bottom:11px;font-variant-numeric:tabular-nums;background:var(--abu-50);border-radius:8px;overflow:hidden}
+.lotcard.picked .lotcard-mid{background:rgba(255,255,255,.6)}
+.lotcard-mid .mi{flex:1;padding:7px 10px;min-width:0}
+.lotcard-mid .mi+.mi{border-left:1px solid var(--abu-200)}
+.lotcard-mid .mi .mk{font-size:9.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--abu-500);margin-bottom:1px}
+.lotcard-mid .mi .mv{font-size:12.5px;font-weight:700;color:var(--abu-900)}
+.lot-qty{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lot-qty label{font-size:12px;font-weight:600;color:var(--abu-700);min-width:0}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--abu-200);border-radius:9px;overflow:hidden;flex:none;background:#fff}
+.stepper button{width:36px;height:36px;font-size:18px;font-weight:600;color:var(--biru-700);background:var(--abu-50);flex:none}
 .stepper button:active{background:var(--biru-100)}
-.stepper input{width:46px;height:34px;border:none;text-align:center;background:#fff;font-weight:700;font-size:14px;-moz-appearance:textfield}
+.stepper input{width:48px;height:36px;border:none;text-align:center;background:#fff;font-weight:700;font-size:15px;-moz-appearance:textfield;min-width:0}
 .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
 /* ---------- SUBMIT BTN ---------- */
@@ -1409,31 +1429,132 @@ function openJualSheet(presetKode) {
       return;
     }
 
+    var totalLotPunya = lots.reduce(function (s, l) { return s + l.sisaLembar / 100; }, 0);
+    // mode: 'cepat' (jual sekian lot, sistem pilih otomatis) | 'pilih' (pilih lot manual)
+    var mode = 'cepat';
+    // qty per lot (untuk mode pilih)
+    var qty = {}; lots.forEach(function (l) { qty[l.id] = 0; });
+    // untuk mode cepat
+    var cepatLot = 0;
+    var cepatMetode = 'FIFO'; // FIFO | PROFIT
+
     area.innerHTML =
       '<div class="row2">'
       + '<div class="field"><label>Harga jual / lembar</label><input class="inp" id="jualHarga" type="number" inputmode="numeric" placeholder="cth 5000" /><div class="field-err" id="jualHargaErr">Harga harus &gt; 0</div></div>'
       + '<div class="field"><label>Tanggal</label><input class="inp" id="jualTgl" type="date" value="' + E.todayISO() + '" /></div>'
       + '</div>'
       + '<div class="field"><label>Fee jual <span class="hint">total, dibagi proporsional</span></label><input class="inp" id="jualFee" type="number" inputmode="numeric" placeholder="0" /></div>'
-      + '<label style="font-size:12.5px;font-weight:600;color:var(--abu-700);margin-bottom:8px;display:block">Pilih lot yang dijual</label>'
-      + '<div class="lot-tools">'
-      + '<button class="lot-tool" type="button" id="toolFifo"><span>FIFO</span><small>terlama dulu</small></button>'
-      + '<button class="lot-tool" type="button" id="toolProfit"><span>Paling untung</span><small>gain tertinggi</small></button>'
-      + '<button class="lot-tool" type="button" id="toolClear"><span>Reset</span><small>kosongkan</small></button>'
+      + '<div class="seg" id="jualModeSeg" style="margin-bottom:14px">'
+      + '<button type="button" data-mode="cepat" class="on">Cepat</button>'
+      + '<button type="button" data-mode="pilih">Pilih lot</button>'
       + '</div>'
-      + '<div id="lotCards"></div>'
+      + '<div id="jualModeBody"></div>'
       + '<div class="calc" id="jualCalc"></div>'
       + '<button class="btn-primary danger" id="jualSubmit">Simpan Penjualan</button>';
-
-    // state qty per lot (dalam lot)
-    var qty = {}; lots.forEach(function (l) { qty[l.id] = 0; });
 
     function curHarga() { return parseFloat($('jualHarga').value) || 0; }
     function curFee() { return parseFloat($('jualFee').value) || 0; }
 
+    // ---- hitung pilihan efektif (untuk submit & kalkulasi) ----
+    function pilihanEfektif() {
+      if (mode === 'cepat') {
+        if (!(cepatLot > 0)) return [];
+        var h = curHarga();
+        var res = E.buatPilihanOtomatis(state, kode, cepatLot,
+          cepatMetode, cepatMetode === 'PROFIT' ? h : undefined);
+        return res.pilihan;
+      } else {
+        var p = [];
+        for (var id in qty) { if (qty[id] > 0) p.push({ beliId: id, lot: qty[id] }); }
+        return p;
+      }
+    }
+
+    // ---- render isi sesuai mode ----
+    function renderModeBody() {
+      var b = $('jualModeBody');
+      if (mode === 'cepat') {
+        b.innerHTML =
+          '<label style="font-size:12.5px;font-weight:600;color:var(--abu-700);margin-bottom:8px;display:block">Jual berapa lot? <span class="hint">dari total ' + totalLotPunya + ' lot</span></label>'
+          + '<div class="lot-qty" style="margin-bottom:14px">'
+          + '<div class="stepper" style="width:100%">'
+          + '<button type="button" id="cepatDec">−</button>'
+          + '<input type="number" inputmode="numeric" id="cepatInput" value="' + cepatLot + '" min="0" max="' + totalLotPunya + '" style="flex:1;width:auto" />'
+          + '<button type="button" id="cepatInc">+</button>'
+          + '</div></div>'
+          + '<div style="display:flex;gap:8px;margin-bottom:4px">'
+          + '<button type="button" id="cepatAll" class="chip" style="flex:1;text-align:center;justify-content:center">Semua (' + totalLotPunya + ' lot)</button>'
+          + '</div>'
+          + '<label style="font-size:12.5px;font-weight:600;color:var(--abu-700);margin:14px 0 8px;display:block">Ambil lot dari mana?</label>'
+          + '<div class="seg" id="cepatMetodeSeg">'
+          + '<button type="button" data-m="FIFO" class="' + (cepatMetode === 'FIFO' ? 'on' : '') + '">Terlama dulu</button>'
+          + '<button type="button" data-m="PROFIT" class="' + (cepatMetode === 'PROFIT' ? 'on' : '') + '">Paling untung</button>'
+          + '</div>'
+          + '<div id="cepatPreviewLot" style="margin-top:12px"></div>';
+
+        var inp = $('cepatInput');
+        function applyCepat() {
+          var v = parseInt(inp.value, 10);
+          if (isNaN(v) || v < 0) v = 0;
+          if (v > totalLotPunya) { v = totalLotPunya; inp.value = v; }
+          cepatLot = v;
+          renderCepatPreview(); updateCalc();
+        }
+        inp.oninput = applyCepat;
+        $('cepatDec').onclick = function () { if (cepatLot > 0) { cepatLot--; inp.value = cepatLot; renderCepatPreview(); updateCalc(); } };
+        $('cepatInc').onclick = function () { if (cepatLot < totalLotPunya) { cepatLot++; inp.value = cepatLot; renderCepatPreview(); updateCalc(); } };
+        $('cepatAll').onclick = function () { cepatLot = totalLotPunya; inp.value = cepatLot; renderCepatPreview(); updateCalc(); };
+        $('cepatMetodeSeg').querySelectorAll('button').forEach(function (btn) {
+          btn.onclick = function () {
+            if (btn.getAttribute('data-m') === 'PROFIT' && !(curHarga() > 0)) {
+              toast('Isi harga jual dulu untuk mode paling untung', 'err'); return;
+            }
+            cepatMetode = btn.getAttribute('data-m');
+            $('cepatMetodeSeg').querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+            btn.classList.add('on');
+            renderCepatPreview(); updateCalc();
+          };
+        });
+        renderCepatPreview();
+      } else {
+        b.innerHTML =
+          '<div class="lot-tools">'
+          + '<button class="lot-tool" type="button" id="toolFifo"><span>FIFO</span><small>terlama dulu</small></button>'
+          + '<button class="lot-tool" type="button" id="toolProfit"><span>Paling untung</span><small>gain tertinggi</small></button>'
+          + '<button class="lot-tool" type="button" id="toolClear"><span>Reset</span><small>kosongkan</small></button>'
+          + '</div>'
+          + '<div id="lotCards"></div>';
+        bindTools();
+        renderCards();
+      }
+    }
+
+    // ---- preview lot mana yang akan terambil di mode cepat ----
+    function renderCepatPreview() {
+      var box = $('cepatPreviewLot');
+      if (!box) return;
+      if (!(cepatLot > 0)) { box.innerHTML = ''; return; }
+      var h = curHarga();
+      var res = E.buatPilihanOtomatis(state, kode, cepatLot, cepatMetode, cepatMetode === 'PROFIT' ? h : undefined);
+      if (res.pilihan.length === 0) { box.innerHTML = ''; return; }
+      var html = '<div style="font-size:11px;color:var(--abu-500);margin-bottom:6px">Lot yang akan dijual:</div>';
+      res.pilihan.forEach(function (p) {
+        var lot = lots.find(function (x) { return x.id === p.beliId; });
+        var cpl = E.costPerLembar(lot);
+        var pl = h > 0 ? (h - cpl) * p.lot * 100 : null;
+        var plH = pl === null ? '' : ' · <span class="' + (pl >= 0 ? 'txt-pos' : 'txt-neg') + '">' + fmtRp(pl, { sign: pl >= 0 }) + '</span>';
+        html += '<div style="font-size:12px;padding:6px 10px;background:var(--abu-50);border-radius:8px;margin-bottom:5px;display:flex;justify-content:space-between">'
+          + '<span>' + fmtTgl(lot.tgl) + ' @ ' + fmtNum(lot.hargaPerLembar) + '</span>'
+          + '<span><b>' + p.lot + ' lot</b>' + plH + '</span></div>';
+      });
+      box.innerHTML = html;
+    }
+
+    // ---- mode pilih: kartu lot ----
     function renderCards() {
       var h = curHarga();
       var box = $('lotCards');
+      if (!box) return;
       box.innerHTML = '';
       lots.forEach(function (l) {
         var cpl = E.costPerLembar(l);
@@ -1441,14 +1562,17 @@ function openJualSheet(presetKode) {
         var plPerLot = h > 0 ? (h - cpl) * 100 : null;
         var picked = qty[l.id] > 0;
         var card = el('div', 'lotcard' + (picked ? ' picked' : ''));
-        var plHtml = plPerLot === null ? '<span style="color:var(--abu-400)">—</span>'
+        var plHtml = plPerLot === null ? '<span style="color:var(--abu-300)">—</span>'
           : '<span class="' + (plPerLot >= 0 ? 'txt-pos' : 'txt-neg') + '">' + fmtRp(plPerLot * lotTersedia, { sign: plPerLot >= 0 }) + '</span>';
         card.innerHTML =
           '<div class="lotcard-top">'
-          + '<div class="lotcard-date">' + fmtTgl(l.tgl) + '<small>beli @ ' + fmtNum(l.hargaPerLembar) + (l.fee ? ' +fee' : '') + '</small></div>'
+          + '<div class="lotcard-date">' + fmtTgl(l.tgl) + '<small>beli @ ' + fmtNum(l.hargaPerLembar) + (l.fee ? ' + fee' : '') + '</small></div>'
           + '<div class="lotcard-pl">' + plHtml + '</div>'
           + '</div>'
-          + '<div class="lotcard-mid"><span>Tersedia: <b>' + lotTersedia + ' lot</b></span><span>Modal/lb: <b>' + fmtNum(Math.round(cpl)) + '</b></span></div>'
+          + '<div class="lotcard-mid">'
+          + '<div class="mi"><div class="mk">Tersedia</div><div class="mv">' + lotTersedia + ' lot</div></div>'
+          + '<div class="mi"><div class="mk">Modal / lembar</div><div class="mv">' + fmtNum(Math.round(cpl)) + '</div></div>'
+          + '</div>'
           + '<div class="lot-qty"><label>Jual berapa lot?</label>'
           + '<div class="stepper">'
           + '<button type="button" data-dec="' + l.id + '">−</button>'
@@ -1458,17 +1582,17 @@ function openJualSheet(presetKode) {
         box.appendChild(card);
       });
 
-      box.querySelectorAll('[data-inc]').forEach(function (b) {
-        b.onclick = function () {
-          var id = b.getAttribute('data-inc');
+      box.querySelectorAll('[data-inc]').forEach(function (btn) {
+        btn.onclick = function () {
+          var id = btn.getAttribute('data-inc');
           var max = lots.find(function (x) { return x.id === id; }).sisaLembar / 100;
           if (qty[id] < max) qty[id]++;
           renderCards(); updateCalc();
         };
       });
-      box.querySelectorAll('[data-dec]').forEach(function (b) {
-        b.onclick = function () {
-          var id = b.getAttribute('data-dec');
+      box.querySelectorAll('[data-dec]').forEach(function (btn) {
+        btn.onclick = function () {
+          var id = btn.getAttribute('data-dec');
           if (qty[id] > 0) qty[id]--;
           renderCards(); updateCalc();
         };
@@ -1488,26 +1612,52 @@ function openJualSheet(presetKode) {
       });
     }
 
+    function bindTools() {
+      $('toolFifo').onclick = function () {
+        var res = E.buatPilihanOtomatis(state, kode, totalLotPunya, 'FIFO');
+        for (var id in qty) qty[id] = 0;
+        res.pilihan.forEach(function (p) { qty[p.beliId] = p.lot; });
+        renderCards(); updateCalc();
+        toast('Terisi FIFO: semua ' + totalLotPunya + ' lot', 'ok');
+      };
+      $('toolProfit').onclick = function () {
+        var h = curHarga();
+        if (!(h > 0)) { toast('Isi harga jual dulu untuk hitung gain', 'err'); return; }
+        var res = E.buatPilihanOtomatis(state, kode, totalLotPunya, 'PROFIT', h);
+        for (var id in qty) qty[id] = 0;
+        res.pilihan.forEach(function (p) {
+          var lot = lots.find(function (x) { return x.id === p.beliId; });
+          if ((h - E.costPerLembar(lot)) > 0) qty[p.beliId] = p.lot;
+        });
+        var totIsi = 0; for (var k in qty) totIsi += qty[k];
+        renderCards(); updateCalc();
+        toast(totIsi > 0 ? 'Terisi lot yang untung dulu' : 'Tidak ada lot yang untung di harga ini', totIsi > 0 ? 'ok' : 'err');
+      };
+      $('toolClear').onclick = function () {
+        for (var id in qty) qty[id] = 0;
+        renderCards(); updateCalc();
+      };
+    }
+
+    // ---- kalkulasi estimasi (berlaku untuk kedua mode) ----
     function updateCalc() {
       var h = curHarga();
       var fee = curFee();
-      var totalLot = 0, totalLembar = 0;
-      for (var id in qty) { totalLot += qty[id]; }
-      totalLembar = totalLot * 100;
+      var pilihan = pilihanEfektif();
+      var totalLot = pilihan.reduce(function (s, p) { return s + p.lot; }, 0);
+      var totalLembar = totalLot * 100;
 
-      // hitung estimasi realized
       var realized = null, proceeds = null;
       if (h > 0 && totalLembar > 0) {
         var feePerLb = fee / totalLembar;
         realized = 0; proceeds = 0;
-        lots.forEach(function (l) {
-          if (qty[l.id] > 0) {
-            var lb = qty[l.id] * 100;
-            var cpl = E.costPerLembar(l);
-            var prc = h * lb - feePerLb * lb;
-            realized += prc - cpl * lb;
-            proceeds += prc;
-          }
+        pilihan.forEach(function (p) {
+          var lot = lots.find(function (x) { return x.id === p.beliId; });
+          var lb = p.lot * 100;
+          var cpl = E.costPerLembar(lot);
+          var prc = h * lb - feePerLb * lb;
+          realized += prc - cpl * lb;
+          proceeds += prc;
         });
       }
 
@@ -1521,44 +1671,28 @@ function openJualSheet(presetKode) {
           + '<div class="calc-row"><span class="k">Uang masuk (net fee)</span><span class="v">' + fmtRp(proceeds) + '</span></div>'
           + '<div class="calc-row calc-total"><span class="k">Estimasi untung/rugi</span><span class="v ' + plCls + '">' + (realized === null ? '—' : fmtRp(realized, { sign: realized >= 0 })) + '</span></div>';
       }
-
       $('jualSubmit').disabled = !(h > 0 && totalLot > 0);
     }
 
-    // tools
-    $('toolFifo').onclick = function () {
-      var totalAvail = lots.reduce(function (s, l) { return s + l.sisaLembar / 100; }, 0);
-      var res = E.buatPilihanOtomatis(state, kode, totalAvail, 'FIFO');
-      for (var id in qty) qty[id] = 0;
-      res.pilihan.forEach(function (p) { qty[p.beliId] = p.lot; });
-      renderCards(); updateCalc();
-      toast('Terisi FIFO: semua ' + totalAvail + ' lot', 'ok');
-    };
-    $('toolProfit').onclick = function () {
-      var h = curHarga();
-      if (!(h > 0)) { toast('Isi harga jual dulu untuk hitung gain', 'err'); return; }
-      var totalAvail = lots.reduce(function (s, l) { return s + l.sisaLembar / 100; }, 0);
-      var res = E.buatPilihanOtomatis(state, kode, totalAvail, 'PROFIT', h);
-      for (var id in qty) qty[id] = 0;
-      // hanya isi lot yang untung (gain>0), urut paling untung
-      res.pilihan.forEach(function (p) {
-        var lot = lots.find(function (x) { return x.id === p.beliId; });
-        if ((h - E.costPerLembar(lot)) > 0) qty[p.beliId] = p.lot;
-      });
-      var totIsi = 0; for (var k in qty) totIsi += qty[k];
-      renderCards(); updateCalc();
-      toast(totIsi > 0 ? 'Terisi lot yang untung dulu' : 'Tidak ada lot yang untung di harga ini', totIsi > 0 ? 'ok' : 'err');
-    };
-    $('toolClear').onclick = function () {
-      for (var id in qty) qty[id] = 0;
-      renderCards(); updateCalc();
-    };
-
-    ['jualHarga', 'jualFee'].forEach(function (id) {
-      $(id).addEventListener('input', function () { renderCards(); updateCalc(); });
+    // ---- toggle mode ----
+    $('jualModeSeg').querySelectorAll('button').forEach(function (btn) {
+      btn.onclick = function () {
+        mode = btn.getAttribute('data-mode');
+        $('jualModeSeg').querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        btn.classList.add('on');
+        renderModeBody(); updateCalc();
+      };
     });
 
-    renderCards();
+    // harga & fee mempengaruhi kalkulasi + preview
+    ['jualHarga', 'jualFee'].forEach(function (id) {
+      $(id).addEventListener('input', function () {
+        if (mode === 'cepat') renderCepatPreview(); else renderCards();
+        updateCalc();
+      });
+    });
+
+    renderModeBody();
     updateCalc();
 
     $('jualSubmit').onclick = function () {
@@ -1566,9 +1700,8 @@ function openJualSheet(presetKode) {
       var fee = parseFloat($('jualFee').value) || 0;
       var tgl = $('jualTgl').value || E.todayISO();
       if (!(h > 0)) { showErr('jualHargaErr', true); markInp('jualHarga', true); return; }
-      var pilihan = [];
-      for (var id in qty) { if (qty[id] > 0) pilihan.push({ beliId: id, lot: qty[id] }); }
-      if (pilihan.length === 0) { toast('Pilih minimal 1 lot', 'err'); return; }
+      var pilihan = pilihanEfektif();
+      if (pilihan.length === 0) { toast(mode === 'cepat' ? 'Isi jumlah lot dulu' : 'Pilih minimal 1 lot', 'err'); return; }
       try {
         var tx = E.addJual(state, { kode: kode, tgl: tgl, hargaPerLembar: h, fee: fee, pilihan: pilihan });
         save(); renderAll(); closeSheet();
