@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B4F9E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jurnal Saham">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Jurnal Saham</title>
+<style>
+:root{
+  --biru-900:#06335f;
+  --biru-700:#0B4F9E;
+  --biru-600:#1565c0;
+  --biru-500:#1e7ad6;
+  --biru-100:#e3effb;
+  --biru-50:#f3f8fd;
+  --hijau:#0a9c5b;
+  --hijau-bg:#e6f7ef;
+  --merah:#d83c3c;
+  --merah-bg:#fdeaea;
+  --kuning:#e0a800;
+  --abu-900:#1a2230;
+  --abu-700:#465468;
+  --abu-500:#7c8aa0;
+  --abu-300:#c3ccda;
+  --abu-200:#dde3ec;
+  --abu-100:#eef2f7;
+  --abu-50:#f7f9fc;
+  --putih:#ffffff;
+  --garis:#e2e8f1;
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 1px 3px rgba(11,79,158,.08),0 4px 16px rgba(11,79,158,.06);
+  --shadow-lg:0 8px 30px rgba(6,51,95,.18);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--abu-50);
+  color:var(--abu-900);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(72px + var(--safe-bot));
+}
+.hidden{display:none !important}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select{font-family:inherit;font-size:16px}
+
+/* ---------- HEADER ---------- */
+.appbar{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(135deg,var(--biru-700),var(--biru-600));
+  color:#fff;
+  padding:calc(var(--safe-top) + 12px) 16px 12px;
+  box-shadow:0 2px 12px rgba(6,51,95,.22);
+}
+.appbar-row{display:flex;align-items:center;gap:11px}
+.logo{
+  width:38px;height:38px;flex:none;
+  background:#fff;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+.logo svg{width:26px;height:26px;display:block}
+.brand{display:flex;flex-direction:column;line-height:1.15}
+.brand b{font-size:17px;font-weight:700;letter-spacing:.2px}
+.brand span{font-size:11px;opacity:.85;font-weight:500}
+.appbar-spacer{flex:1}
+.hdr-stat{text-align:right}
+.hdr-stat .lbl{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+.hdr-stat .val{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* ---------- CONTAINER ---------- */
+.wrap{max-width:680px;margin:0 auto;padding:14px 14px 0}
+
+/* ---------- HERO RINGKASAN ---------- */
+.hero{
+  background:linear-gradient(150deg,var(--biru-900),var(--biru-700) 70%);
+  border-radius:18px;
+  color:#fff;
+  padding:18px 18px 16px;
+  box-shadow:var(--shadow-lg);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-40px;top:-40px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);
+}
+.hero .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.8;font-weight:600}
+.hero .total-cuan{font-size:30px;font-weight:800;margin:3px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.hero .sub{font-size:12.5px;opacity:.9}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;
+  position:relative;z-index:1;
+}
+.hero-cell{background:rgba(255,255,255,.12);border-radius:11px;padding:10px 12px;backdrop-filter:blur(4px)}
+.hero-cell .k{font-size:10.5px;opacity:.82;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.hero-cell .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.pos{color:#7ff0bb !important}
+.neg{color:#ff9d9d !important}
+.txt-pos{color:var(--hijau)}
+.txt-neg{color:var(--merah)}
+
+/* ---------- SECTION ---------- */
+.section{margin-top:20px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px}
+.section-head h2{font-size:15px;font-weight:700;color:var(--abu-900);margin:0;display:flex;align-items:center;gap:7px}
+.section-head .count{background:var(--biru-100);color:var(--biru-700);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* ---------- CARD POSISI ---------- */
+.poscard{
+  background:#fff;border-radius:var(--radius);padding:13px 14px;margin-bottom:10px;
+  box-shadow:var(--shadow);border:1px solid var(--garis);
+}
+.poscard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.kode-badge{
+  font-weight:800;font-size:15px;color:var(--biru-700);
+  letter-spacing:.3px;display:flex;align-items:center;gap:8px;
+}
+.kode-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--biru-500)}
+.pos-name{font-size:11.5px;color:var(--abu-500);margin-top:1px;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pos-pl{text-align:right;font-variant-numeric:tabular-nums}
+.pos-pl .big{font-size:15px;font-weight:700}
+.pos-pl .pct{font-size:11.5px;font-weight:600}
+.poscard-mid{display:flex;gap:14px;margin-top:11px;padding-top:11px;border-top:1px dashed var(--abu-200)}
+.poscard-mid .m{flex:1}
+.poscard-mid .m .k{font-size:10px;color:var(--abu-500);text-transform:uppercase;letter-spacing:.3px}
+.poscard-mid .m .v{font-size:13.5px;font-weight:600;color:var(--abu-900);font-variant-numeric:tabular-nums;margin-top:1px}
+.poscard-actions{display:flex;gap:8px;margin-top:12px}
+.btn-sell,.btn-detail{
+  flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:600;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.btn-sell{background:var(--merah-bg);color:var(--merah)}
+.btn-sell:active{background:#fbdada}
+.btn-detail{background:var(--biru-50);color:var(--biru-700)}
+.btn-detail:active{background:var(--biru-100)}
+
+/* ---------- EMPTY STATE ---------- */
+.empty{
+  text-align:center;padding:38px 20px;color:var(--abu-500);
+  background:#fff;border-radius:var(--radius);border:1px dashed var(--abu-300);
+}
+.empty svg{width:46px;height:46px;opacity:.4;margin-bottom:10px}
+.empty b{display:block;color:var(--abu-700);font-size:14px;margin-bottom:3px}
+.empty span{font-size:12.5px}
+
+/* ---------- TRANSAKSI LIST ---------- */
+.tx-item{
+  background:#fff;border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:8px;
+  box-shadow:var(--shadow);border:1px solid var(--garis);
+  display:flex;align-items:center;gap:11px;
+}
+.tx-ic{width:34px;height:34px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+.tx-ic.beli{background:var(--biru-100);color:var(--biru-700)}
+.tx-ic.jual{background:var(--merah-bg);color:var(--merah)}
+.tx-ic.div{background:var(--hijau-bg);color:var(--hijau)}
+.tx-body{flex:1;min-width:0}
+.tx-body .l1{display:flex;align-items:center;gap:7px;font-size:13.5px}
+.tx-body .l1 b{font-weight:700;color:var(--abu-900)}
+.tx-body .l1 .tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;text-transform:uppercase;letter-spacing:.3px}
+.tag.beli{background:var(--biru-100);color:var(--biru-700)}
+.tag.jual{background:var(--merah-bg);color:var(--merah)}
+.tag.div{background:var(--hijau-bg);color:var(--hijau)}
+.tx-body .l2{font-size:11.5px;color:var(--abu-500);margin-top:2px;font-variant-numeric:tabular-nums}
+.tx-right{text-align:right;font-variant-numeric:tabular-nums}
+.tx-right .amt{font-size:13.5px;font-weight:700}
+.tx-right .pl{font-size:11px;font-weight:600;margin-top:1px}
+.tx-del{padding:6px;color:var(--abu-300);margin-left:2px;flex:none}
+.tx-del:active{color:var(--merah)}
+.tx-del svg{width:17px;height:17px;display:block}
+
+/* ---------- FAB / BOTTOM BAR ---------- */
+.bottombar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+  border-top:1px solid var(--garis);
+  padding:8px 14px calc(8px + var(--safe-bot));
+  display:flex;gap:10px;max-width:680px;margin:0 auto;
+}
+.bb-btn{
+  flex:1;padding:13px;border-radius:12px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.bb-beli{background:linear-gradient(135deg,var(--biru-700),var(--biru-600));color:#fff;box-shadow:0 3px 10px rgba(11,79,158,.32)}
+.bb-beli:active{transform:translateY(1px)}
+.bb-jual{background:#fff;color:var(--merah);border:1.5px solid var(--merah-bg)}
+.bb-jual:active{background:var(--merah-bg)}
+.bb-btn svg{width:18px;height:18px}
+
+/* ---------- TABBAR ---------- */
+.tabbar{display:flex;background:#fff;border-radius:12px;padding:4px;margin-top:14px;box-shadow:var(--shadow);border:1px solid var(--garis)}
+.tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:600;color:var(--abu-500);border-radius:9px;transition:all .15s}
+.tab.active{background:var(--biru-700);color:#fff;box-shadow:0 2px 6px rgba(11,79,158,.25)}
+
+/* ---------- MODAL ---------- */
+.modal-bg{
+  position:fixed;inset:0;z-index:100;background:rgba(6,51,95,.45);
+  backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.modal-bg.show{opacity:1;pointer-events:auto}
+.sheet{
+  background:#fff;width:100%;max-width:680px;
+  border-radius:22px 22px 0 0;
+  max-height:92vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  padding-bottom:calc(20px + var(--safe-bot));
+  -webkit-overflow-scrolling:touch;
+}
+.modal-bg.show .sheet{transform:translateY(0)}
+.sheet-handle{width:40px;height:4px;background:var(--abu-300);border-radius:3px;margin:10px auto 4px}
+.sheet-head{
+  position:sticky;top:0;background:#fff;z-index:2;
+  padding:8px 18px 14px;border-bottom:1px solid var(--garis);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sheet-head h3{margin:0;font-size:17px;font-weight:700}
+.sheet-head .x{width:32px;height:32px;border-radius:50%;background:var(--abu-100);color:var(--abu-700);display:flex;align-items:center;justify-content:center;font-size:18px}
+.sheet-body{padding:16px 18px}
+
+/* ---------- FORM ---------- */
+.field{margin-bottom:15px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--abu-700);margin-bottom:6px}
+.field .hint{font-size:11px;color:var(--abu-500);font-weight:400;margin-left:4px}
+.inp{
+  width:100%;padding:12px 13px;border:1.5px solid var(--abu-200);border-radius:11px;
+  background:var(--abu-50);color:var(--abu-900);transition:border .15s,background .15s;
+}
+.inp:focus{outline:none;border-color:var(--biru-500);background:#fff}
+.inp.err{border-color:var(--merah);background:var(--merah-bg)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field-err{font-size:11.5px;color:var(--merah);margin-top:5px;font-weight:500;display:none}
+.field-err.show{display:block}
+
+/* ---------- COMBOBOX SAHAM ---------- */
+.combo{position:relative}
+.combo-input{display:flex;align-items:center;border:1.5px solid var(--abu-200);border-radius:11px;background:var(--abu-50);padding:0 12px;transition:border .15s,background .15s}
+.combo-input:focus-within{border-color:var(--biru-500);background:#fff}
+.combo-input.err{border-color:var(--merah);background:var(--merah-bg)}
+.combo-input input{flex:1;border:none;background:none;padding:12px 0;outline:none}
+.combo-input .chev{color:var(--abu-500);font-size:12px;pointer-events:none}
+.combo-list{
+  position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:30;
+  background:#fff;border:1px solid var(--garis);border-radius:12px;
+  box-shadow:var(--shadow-lg);max-height:240px;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.combo-opt{padding:11px 13px;border-bottom:1px solid var(--abu-100);display:flex;align-items:baseline;gap:9px}
+.combo-opt:last-child{border-bottom:none}
+.combo-opt:active{background:var(--biru-50)}
+.combo-opt b{font-weight:700;color:var(--biru-700);font-size:14px;min-width:52px}
+.combo-opt span{font-size:12px;color:var(--abu-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.combo-opt mark{background:#fff3bf;color:inherit;padding:0;border-radius:2px}
+.combo-empty{padding:16px;text-align:center;color:var(--abu-500);font-size:12.5px}
+
+/* ---------- SEGMENTED (tipe) ---------- */
+.seg{display:flex;background:var(--abu-100);border-radius:11px;padding:3px;gap:3px}
+.seg button{flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:600;color:var(--abu-600);transition:all .15s}
+.seg button.on{background:#fff;color:var(--biru-700);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* ---------- KALKULASI PREVIEW ---------- */
+.calc{background:var(--biru-50);border:1px solid var(--biru-100);border-radius:12px;padding:13px;margin:4px 0 16px}
+.calc-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+.calc-row .k{color:var(--abu-700)}
+.calc-row .v{font-weight:600;font-variant-numeric:tabular-nums}
+.calc-total{border-top:1.5px solid var(--biru-100);margin-top:6px;padding-top:8px;font-size:15px}
+.calc-total .k{font-weight:700;color:var(--abu-900)}
+.calc-total .v{font-weight:800;color:var(--biru-700)}
+
+/* ---------- PILIH LOT (JUAL) ---------- */
+.lot-tools{display:flex;gap:8px;margin-bottom:12px}
+.lot-tool{flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:600;background:var(--abu-100);color:var(--abu-700);display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px solid transparent}
+.lot-tool:active{border-color:var(--biru-500);background:var(--biru-50)}
+.lot-tool small{font-size:9.5px;font-weight:500;opacity:.75}
+.lotcard{border:1.5px solid var(--abu-200);border-radius:12px;padding:11px 12px;margin-bottom:9px;transition:border .15s,background .15s}
+.lotcard.picked{border-color:var(--biru-500);background:var(--biru-50)}
+.lotcard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.lotcard-date{font-size:12px;font-weight:600;color:var(--abu-900)}
+.lotcard-date small{display:block;font-size:10.5px;color:var(--abu-500);font-weight:400}
+.lotcard-pl{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.lotcard-mid{display:flex;gap:12px;font-size:11px;color:var(--abu-600);margin-bottom:9px;font-variant-numeric:tabular-nums}
+.lotcard-mid b{color:var(--abu-900)}
+.lot-qty{display:flex;align-items:center;gap:9px}
+.lot-qty label{font-size:11.5px;color:var(--abu-600);flex:1}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--abu-200);border-radius:9px;overflow:hidden}
+.stepper button{width:32px;height:34px;font-size:17px;font-weight:600;color:var(--biru-700);background:var(--abu-50)}
+.stepper button:active{background:var(--biru-100)}
+.stepper input{width:46px;height:34px;border:none;text-align:center;background:#fff;font-weight:700;font-size:14px;-moz-appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* ---------- SUBMIT BTN ---------- */
+.btn-primary{
+  width:100%;padding:15px;border-radius:13px;font-size:15px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--biru-700),var(--biru-600));
+  box-shadow:0 4px 12px rgba(11,79,158,.3);
+}
+.btn-primary:active{transform:translateY(1px)}
+.btn-primary:disabled{opacity:.5;background:var(--abu-300);box-shadow:none;color:#fff}
+.btn-primary.danger{background:linear-gradient(135deg,var(--merah),#c43030);box-shadow:0 4px 12px rgba(216,60,60,.3)}
+
+/* ---------- DETAIL ---------- */
+.detail-sum{background:var(--biru-50);border-radius:13px;padding:14px;margin-bottom:16px}
+.detail-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail-sum-grid .c .k{font-size:10.5px;color:var(--abu-500);text-transform:uppercase;letter-spacing:.3px}
+.detail-sum-grid .c .v{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:1px}
+.lot-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--abu-100);font-size:13px}
+.lot-row:last-child{border-bottom:none}
+.lot-row .li{font-variant-numeric:tabular-nums}
+.lot-row .li small{color:var(--abu-500);font-size:11px}
+
+/* ---------- TOAST ---------- */
+.toast-wrap{position:fixed;left:0;right:0;bottom:calc(86px + var(--safe-bot));z-index:200;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 16px}
+.toast{
+  background:var(--abu-900);color:#fff;padding:12px 18px;border-radius:12px;
+  font-size:13.5px;font-weight:500;box-shadow:var(--shadow-lg);
+  max-width:90%;text-align:center;
+  transform:translateY(20px);opacity:0;transition:all .25s;
+  display:flex;align-items:center;gap:9px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:#0a7c47}
+.toast.err{background:#c43030}
+.toast svg{width:18px;height:18px;flex:none}
+
+/* ---------- CONFIRM DIALOG ---------- */
+.confirm-bg{position:fixed;inset:0;z-index:150;background:rgba(6,51,95,.5);display:flex;align-items:center;justify-content:center;padding:28px;opacity:0;pointer-events:none;transition:opacity .2s}
+.confirm-bg.show{opacity:1;pointer-events:auto}
+.confirm{background:#fff;border-radius:18px;padding:22px;max-width:340px;width:100%;box-shadow:var(--shadow-lg);transform:scale(.95);transition:transform .2s}
+.confirm-bg.show .confirm{transform:scale(1)}
+.confirm h4{margin:0 0 7px;font-size:16px;font-weight:700}
+.confirm p{margin:0 0 18px;font-size:13.5px;color:var(--abu-700);line-height:1.5}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;padding:12px;border-radius:11px;font-size:14px;font-weight:600}
+.c-cancel{background:var(--abu-100);color:var(--abu-700)}
+.c-cancel:active{background:var(--abu-200)}
+.c-ok{background:var(--merah);color:#fff}
+.c-ok:active{background:#c43030}
+.c-ok.blue{background:var(--biru-700)}
+
+/* ---------- MENU (titik tiga) ---------- */
+.menu-pop{position:absolute;right:14px;top:calc(var(--safe-top) + 56px);z-index:80;background:#fff;border-radius:13px;box-shadow:var(--shadow-lg);border:1px solid var(--garis);overflow:hidden;min-width:190px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:all .18s}
+.menu-pop.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.menu-item{padding:13px 16px;font-size:13.5px;display:flex;align-items:center;gap:11px;color:var(--abu-900);border-bottom:1px solid var(--abu-100)}
+.menu-item:last-child{border-bottom:none}
+.menu-item:active{background:var(--abu-50)}
+.menu-item svg{width:17px;height:17px;color:var(--abu-500)}
+.menu-item.danger{color:var(--merah)}
+.menu-item.danger svg{color:var(--merah)}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff}
+.icon-btn:active{background:rgba(255,255,255,.15)}
+.icon-btn svg{width:22px;height:22px}
+
+/* filter chips di transaksi */
+.chips{display:flex;gap:7px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;background:#fff;color:var(--abu-600);border:1.5px solid var(--garis);white-space:nowrap;flex:none}
+.chip.on{background:var(--biru-700);color:#fff;border-color:var(--biru-700)}
+
+/* ---------- BANNER INSTALL iOS ---------- */
+.ios-install{
+  position:fixed;left:12px;right:12px;bottom:calc(80px + var(--safe-bot));z-index:90;
+  background:#fff;border-radius:16px;padding:14px 16px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--garis);
+  max-width:656px;margin:0 auto;
+  transform:translateY(140%);opacity:0;transition:all .35s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none;
+}
+.ios-install.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.ios-install-x{position:absolute;top:8px;right:10px;width:26px;height:26px;border-radius:50%;background:var(--abu-100);color:var(--abu-600);font-size:16px;display:flex;align-items:center;justify-content:center}
+.ios-install-row{display:flex;align-items:center;gap:13px}
+.ios-install-ic{width:46px;height:46px;flex:none;background:linear-gradient(150deg,var(--biru-900),var(--biru-700));border-radius:12px;display:flex;align-items:center;justify-content:center}
+.ios-install-ic svg{width:30px;height:30px}
+.ios-install-txt b{display:block;font-size:14px;font-weight:700;color:var(--abu-900);margin-bottom:2px}
+.ios-install-txt span{font-size:12px;color:var(--abu-600);display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.share-ic{width:15px;height:15px;color:var(--biru-600);vertical-align:middle}
+</style>
+</head>
+<body>
+  <!-- ====================== HEADER ====================== -->
+  <header class="appbar">
+    <div class="appbar-row">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <rect x="3" y="17" width="5" height="11" rx="1.5" fill="#1565c0"/>
+          <rect x="11" y="11" width="5" height="17" rx="1.5" fill="#0B4F9E"/>
+          <rect x="19" y="6" width="5" height="22" rx="1.5" fill="#1e7ad6"/>
+          <path d="M4 13 L13 9 L21 5 L28 2" stroke="#0a9c5b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="2.5" r="2.4" fill="#0a9c5b"/>
+        </svg>
+      </div>
+      <div class="brand">
+        <b>Jurnal Saham</b>
+        <span>Catat beli &middot; jual &middot; cuan</span>
+      </div>
+      <div class="appbar-spacer"></div>
+      <button class="icon-btn" id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- menu popup -->
+  <div class="menu-pop" id="menuPop">
+    <div class="menu-item" data-act="harga">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+      Atur harga sekarang
+    </div>
+    <div class="menu-item" data-act="export">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+      Backup data (export)
+    </div>
+    <div class="menu-item" data-act="import">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 8l5-5 5 5"/><path d="M12 3v12"/></svg>
+      Pulihkan data (import)
+    </div>
+    <div class="menu-item danger" data-act="reset">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      Hapus semua data
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- ====================== HERO ====================== -->
+    <div class="hero">
+      <div class="eyebrow">Total Cuan</div>
+      <div class="total-cuan" id="heroTotal">Rp 0</div>
+      <div class="sub" id="heroSub">Belum ada transaksi</div>
+      <div class="hero-grid">
+        <div class="hero-cell">
+          <div class="k">Modal Tertanam</div>
+          <div class="v" id="heroModal">Rp 0</div>
+        </div>
+        <div class="hero-cell">
+          <div class="k">Nilai Pasar</div>
+          <div class="v" id="heroPasar">Rp 0</div>
+        </div>
+        <div class="hero-cell">
+          <div class="k">Floating P/L</div>
+          <div class="v" id="heroFloat">—</div>
+        </div>
+        <div class="hero-cell">
+          <div class="k">Realized + Dividen</div>
+          <div class="v" id="heroReal">Rp 0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================== TABS ====================== -->
+    <div class="tabbar">
+      <div class="tab active" data-tab="portfolio">Portfolio</div>
+      <div class="tab" data-tab="riwayat">Riwayat</div>
+    </div>
+
+    <!-- ====================== PORTFOLIO ====================== -->
+    <div id="viewPortfolio">
+      <div class="section">
+        <div class="section-head">
+          <h2>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4F9E" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Saham Dipegang
+          </h2>
+          <span class="count" id="portCount">0</span>
+        </div>
+        <div id="portfolioList"></div>
+      </div>
+    </div>
+
+    <!-- ====================== RIWAYAT ====================== -->
+    <div id="viewRiwayat" class="hidden">
+      <div class="section">
+        <div class="chips" id="txChips">
+          <div class="chip on" data-f="ALL">Semua</div>
+          <div class="chip" data-f="BELI">Beli</div>
+          <div class="chip" data-f="JUAL">Jual</div>
+          <div class="chip" data-f="DIVIDEN">Dividen</div>
+        </div>
+        <div id="riwayatList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== BOTTOM BAR ====================== -->
+  <div class="bottombar">
+    <button class="bb-btn bb-jual" id="openJual">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7 7 7-7"/></svg>
+      Jual
+    </button>
+    <button class="bb-btn bb-beli" id="openBeli">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+      Beli
+    </button>
+  </div>
+
+  <!-- ====================== TOAST ====================== -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- ====================== BANNER INSTALL iOS ====================== -->
+  <div class="ios-install" id="iosInstall">
+    <button class="ios-install-x" id="iosInstallClose" aria-label="Tutup">&times;</button>
+    <div class="ios-install-row">
+      <div class="ios-install-ic">
+        <svg viewBox="0 0 32 32" fill="none">
+          <rect x="3" y="17" width="5" height="11" rx="1.5" fill="#1565c0"/>
+          <rect x="11" y="11" width="5" height="17" rx="1.5" fill="#0B4F9E"/>
+          <rect x="19" y="6" width="5" height="22" rx="1.5" fill="#1e7ad6"/>
+          <path d="M4 13 L13 9 L21 5 L28 2" stroke="#0a9c5b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="ios-install-txt">
+        <b>Pasang ke layar utama</b>
+        <span>Tap <svg class="share-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M20 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5"/></svg> lalu "Tambahkan ke Layar Utama"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== CONFIRM ====================== -->
+  <div class="confirm-bg" id="confirmBg">
+    <div class="confirm">
+      <h4 id="confirmTitle">Konfirmasi</h4>
+      <p id="confirmMsg"></p>
+      <div class="confirm-btns">
+        <button class="c-cancel" id="confirmCancel">Batal</button>
+        <button class="c-ok" id="confirmOk">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== SHEET (modal) ====================== -->
+  <div class="modal-bg" id="sheetBg">
+    <div class="sheet" id="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <h3 id="sheetTitle">Transaksi</h3>
+        <button class="x" id="sheetClose">&times;</button>
+      </div>
+      <div class="sheet-body" id="sheetBody"></div>
+    </div>
+  </div>
+
+<script>
+window.EMITEN_DATA = {"AADI":"Adaro Andalan Indonesia Tbk.","AALI":"Astra Agro Lestari Tbk.","ABBA":"Mahaka Media Tbk.","ABDA":"Asuransi Bina Dana Arta Tbk.","ABMM":"ABM Investama Tbk.","ACES":"Aspirasi Hidup Indonesia Tbk.","ACRO":"Samcro Hyosung Adilestari Tbk.","ACST":"Acset Indonusa Tbk.","ADCP":"Adhi Commuter Properti Tbk.","ADES":"Akasha Wira International Tbk.","ADHI":"Adhi Karya (Persero) Tbk.","ADMF":"Adira Dinamika Multi Finance T","ADMG":"Polychem Indonesia Tbk","ADMR":"Adaro Minerals Indonesia Tbk.","ADRO":"Alamtri Resources Indonesia Tb","AEGS":"Anugerah Spareparts Sejahtera","AGAR":"Asia Sejahtera Mina Tbk.","AGII":"Samator Indo Gas Tbk.","AGRO":"Bank Raya Indonesia Tbk.","AGRS":"Bank IBK Indonesia Tbk.","AHAP":"Asuransi Harta Aman Pratama Tb","AIMS":"Artha Mahiya Investama Tbk.","AISA":"FKS Food Sejahtera Tbk.","AKKU":"Anugerah Kagum Karya Utama Tbk","AKPI":"Argha Karya Prima Industry Tbk","AKRA":"AKR Corporindo Tbk.","AKSI":"Mineral Sumberdaya Mandiri Tbk","ALDO":"Alkindo Naratama Tbk.","ALII":"Ancara Logistics Indonesia Tbk","ALKA":"Alakasa Industrindo Tbk","ALMI":"Alumindo Light Metal Industry","ALTO":"Tri Banyan Tirta Tbk.","AMAG":"Asuransi Multi Artha Guna Tbk.","AMAN":"Makmur Berkah Amanda Tbk.","AMAR":"Bank Amar Indonesia Tbk.","AMFG":"Asahimas Flat Glass Tbk.","AMIN":"Ateliers Mecaniques D Indonesi","AMMN":"Amman Mineral Internasional Tbk.","AMMS":"Agung Menjangan Mas Tbk.","AMOR":"Ashmore Asset Management Indon","AMRT":"Sumber Alfaria Trijaya Tbk.","ANDI":"Andira Agro Tbk.","ANJT":"Austindo Nusantara Jaya Tbk.","ANTM":"Aneka Tambang Tbk.","APEX":"Apexindo Pratama Duta Tbk.","APIC":"Pacific Strategic Financial Tb","APII":"Arita Prima Indonesia Tbk.","APLI":"Asiaplast Industries Tbk.","APLN":"Agung Podomoro Land Tbk.","ARCI":"Archi Indonesia Tbk.","AREA":"Dunia Virtual Online Tbk.","ARGO":"Argo Pantes Tbk","ARII":"Atlas Resources Tbk.","ARKA":"Arkha Jayanti Persada Tbk.","ARKO":"Arkora Hydro Tbk.","ARMY":"Armidian Karyatama Tbk.","ARNA":"Arwana Citramulia Tbk.","ARTA":"Arthavest Tbk","ARTI":"Ratu Prabu Energi Tbk","ARTO":"Bank Jago Tbk.","ASBI":"Asuransi Bintang Tbk.","ASDM":"Asuransi Dayin Mitra Tbk.","ASGR":"Astra Graphia Tbk.","ASHA":"Cilacap Samudera Fishing Indus","ASII":"Astra International Tbk.","ASJT":"Asuransi Jasa Tania Tbk.","ASLC":"Autopedia Sukses Lestari Tbk.","ASLI":"Asri Karya Lestari Tbk.","ASMI":"Asuransi Maximus Graha Persada","ASPI":"Andalan Sakti Primaindo Tbk.","ASRI":"Alam Sutera Realty Tbk.","ASRM":"Asuransi Ramayana Tbk.","ASSA":"Adi Sarana Armada Tbk.","ATAP":"Trimitra Prawara Goldland Tbk.","ATIC":"Anabatic Technologies Tbk.","ATLA":"Atlantis Subsea Indonesia Tbk.","AUTO":"Astra Otoparts Tbk.","AVIA":"Avia Avian Tbk.","AWAN":"Era Digital Media Tbk.","AXIO":"Tera Data Indonusa Tbk.","AYAM":"Janu Putra Sejahtera Tbk.","AYLS":"Agro Yasa Lestari Tbk.","BABP":"Bank MNC Internasional Tbk.","BABY":"Multitrend Indo Tbk.","BACA":"Bank Capital Indonesia Tbk.","BAIK":"Bersama Mencapai Puncak Tbk.","BAJA":"Saranacentral Bajatama Tbk.","BALI":"Bali Towerindo Sentra Tbk.","BANK":"Bank Aladin Syariah Tbk.","BAPA":"Bekasi Asri Pemula Tbk.","BAPI":"Bhakti Agung Propertindo Tbk.","BATA":"Sepatu Bata Tbk.","BATR":"Benteng Api Technic Tbk.","BAUT":"Mitra Angkasa Sejahtera Tbk.","BAYU":"Bayu Buana Tbk","BBCA":"Bank Central Asia Tbk.","BBHI":"Allo Bank Indonesia Tbk.","BBKP":"Bank KB Bukopin Tbk.","BBLD":"Buana Finance Tbk.","BBMD":"Bank Mestika Dharma Tbk.","BBNI":"Bank Negara Indonesia (Persero","BBRI":"Bank Rakyat Indonesia (Persero) Tbk.","BBRM":"Pelayaran Nasional Bina Buana","BBSI":"Krom Bank Indonesia Tbk.","BBSS":"Bumi Benowo Sukses Sejahtera T","BBTN":"Bank Tabungan Negara (Persero)","BBYB":"Bank Neo Commerce Tbk.","BCAP":"MNC Kapital Indonesia Tbk.","BCIC":"Bank JTrust Indonesia Tbk.","BCIP":"Bumi Citra Permai Tbk.","BDKR":"Berdikari Pondasi Perkasa Tbk.","BDMN":"Bank Danamon Indonesia Tbk.","BEBS":"Berkah Beton Sadaya Tbk.","BEEF":"Estika Tata Tiara Tbk.","BEER":"Jobubu Jarum Minahasa Tbk.","BEKS":"Bank Pembangunan Daerah Banten","BELI":"Global Digital Niaga Tbk.","BELL":"Trisula Textile Industries Tbk","BESS":"Batulicin Nusantara Maritim Tb","BEST":"Bekasi Fajar Industrial Estate","BFIN":"BFI Finance  Indonesia Tbk.","BGTG":"Bank Ganesha Tbk.","BHAT":"Bhakti Multi Artha Tbk.","BHIT":"MNC Asia Holding Tbk.","BIKA":"Binakarya Jaya Abadi Tbk.","BIKE":"Sepeda Bersama Indonesia Tbk.","BIMA":"Primarindo Asia Infrastructure","BINA":"Bank Ina Perdana Tbk.","BINO":"Perma Plasindo Tbk.","BIPI":"Astrindo Nusantara Infrastrukt","BIPP":"Bhuwanatala Indah Permai Tbk.","BIRD":"Blue Bird Tbk.","BISI":"BISI International Tbk.","BJBR":"Bank Pembangunan Daerah Jawa B","BJTM":"Bank Pembangunan Daerah Jawa T","BKDP":"Bukit Darmo Property Tbk","BKSL":"Sentul City Tbk.","BKSW":"Bank QNB Indonesia Tbk.","BLES":"Superior Prima Sukses Tbk.","BLOG":"Trimitra Trans Persada Tbk.","BLTA":"Berlian Laju Tanker Tbk","BLTZ":"Graha Layar Prima Tbk.","BLUE":"Berkah Prima Perkasa Tbk.","BMAS":"Bank Maspion Indonesia Tbk.","BMBL":"Lavender Bina Cendikia Tbk.","BMHS":"Bundamedik Tbk.","BMRI":"Bank Mandiri (Persero) Tbk.","BMSR":"Bintang Mitra Semestaraya Tbk","BMTR":"Global Mediacom Tbk.","BNBA":"Bank Bumi Arta Tbk.","BNBR":"Bakrie & Brothers Tbk","BNGA":"Bank CIMB Niaga Tbk.","BNII":"Bank Maybank Indonesia Tbk.","BNLI":"Bank Permata Tbk.","BOAT":"Newport Marine Services Tbk.","BOBA":"Formosa Ingredient Factory Tbk","BOGA":"Bintang Oto Global Tbk.","BOLA":"Bali Bintang Sejahtera Tbk.","BOLT":"Garuda Metalindo Tbk.","BOSS":"Borneo Olah Sarana Sukses Tbk.","BPFI":"Woori Finance Indonesia Tbk.","BPII":"Batavia Prosperindo Internasio","BPTR":"Batavia Prosperindo Trans Tbk.","BRAM":"Indo Kordsa Tbk.","BREN":"Barito Renewables Energy Tbk.","BRIS":"Bank Syariah Indonesia Tbk.","BRMS":"Bumi Resources Minerals Tbk.","BRNA":"Berlina Tbk.","BRPT":"Barito Pacific Tbk.","BRRC":"Raja Roti Cemerlang Tbk.","BSBK":"Wulandari Bangun Laksana Tbk.","BSDE":"Bumi Serpong Damai Tbk.","BSIM":"Bank Sinarmas Tbk.","BSML":"Bintang Samudera Mandiri Lines","BSSR":"Baramulti Suksessarana Tbk.","BSWD":"Bank Of India Indonesia Tbk.","BTEK":"Bumi Teknokultura Unggul Tbk","BTEL":"Bakrie Telecom Tbk.","BTON":"Betonjaya Manunggal Tbk.","BTPN":"Bank SMBC Indonesia Tbk.","BTPS":"Bank BTPN Syariah Tbk.","BUAH":"Segar Kumala Indonesia Tbk.","BUDI":"Budi Starch & Sweetener Tbk.","BUKA":"Bukalapak.com Tbk.","BUKK":"Bukaka Teknik Utama Tbk.","BULL":"Buana Lintas Lautan Tbk.","BUMI":"Bumi Resources Tbk.","BUVA":"Bukit Uluwatu Villa Tbk.","BVIC":"Bank Victoria International Tb","BWPT":"Eagle High Plantations Tbk.","BYAN":"Bayan Resources Tbk.","CAKK":"Cahayaputra Asa Keramik Tbk.","CAMP":"Campina Ice Cream Industry Tbk","CANI":"Capitol Nusantara Indonesia Tb","CARE":"Metro Healthcare Indonesia Tbk","CARS":"Industri dan Perdagangan Bintr","CASA":"Capital Financial Indonesia Tb","CASH":"Cashlez Worldwide Indonesia Tb","CASS":"Cardig Aero Services Tbk.","CBDK":"Bangun Kosambi Sukses Tbk.","CBMF":"Cahaya Bintang Medan Tbk.","CBPE":"Citra Buana Prasida Tbk.","CBRE":"Cakra Buana Resources Energi T","CBUT":"Citra Borneo Utama Tbk.","CCSI":"Communication Cable Systems In","CEKA":"Wilmar Cahaya Indonesia Tbk.","CENT":"Centratama Telekomunikasi Indonesia Tbk.","CFIN":"Clipan Finance Indonesia Tbk.","CGAS":"Citra Nusantara Gemilang Tbk.","CHEK":"Diastika Biotekindo Tbk.","CHEM":"Chemstar Indonesia Tbk.","CHIP":"Pelita Teknologi Global Tbk.","CINT":"Chitose Internasional Tbk.","CITA":"Cita Mineral Investindo Tbk.","CITY":"Natura City Developments Tbk.","CLAY":"Citra Putra Realty Tbk.","CLEO":"Sariguna Primatirta Tbk.","CLPI":"Colorpak Indonesia Tbk.","CMNP":"Citra Marga Nusaphala Persada","CMNT":"Cemindo Gemilang Tbk.","CMPP":"AirAsia Indonesia Tbk.","CMRY":"Cisarua Mountain Dairy Tbk.","CNKO":"Exploitasi Energi Indonesia Tb","CNMA":"Nusantara Sejahtera Raya Tbk.","CNTX":"Century Textile Industry Tbk.","COAL":"Black Diamond Resources Tbk.","COCO":"Wahana Interfood Nusantara Tbk","COWL":"Cowell Development Tbk.","CPIN":"Charoen Pokphand Indonesia Tbk","CPRI":"Capri Nusa Satu Properti Tbk.","CPRO":"Central Proteina Prima Tbk.","CRAB":"Toba Surimi Industries Tbk.","CRSN":"Carsurin Tbk.","CSAP":"Catur Sentosa Adiprana Tbk.","CSIS":"Cahayasakti Investindo Sukses","CSMI":"Cipta Selera Murni Tbk.","CSRA":"Cisadane Sawit Raya Tbk.","CTBN":"Citra Tubindo Tbk.","CTRA":"Ciputra Development Tbk.","CTTH":"Citatah Tbk.","CUAN":"Petrindo Jaya Kreasi Tbk.","CYBR":"ITSEC Asia Tbk.","DAAZ":"Daaz Bara Lestari Tbk.","DADA":"Diamond Citra Propertindo Tbk.","DART":"Duta Anggada Realty Tbk.","DATA":"Remala Abadi Tbk.","DAYA":"Duta Intidaya Tbk.","DCII":"DCI Indonesia Tbk.","DEAL":"Dewata Freightinternational Tb","DEFI":"Danasupra Erapacific Tbk.","DEPO":"Caturkarda Depo Bangunan Tbk.","DEWA":"Darma Henwa Tbk","DEWI":"Dewi Shri Farmindo Tbk.","DFAM":"Dafam Property Indonesia Tbk.","DGIK":"Nusa Konstruksi Enjiniring Tbk","DGNS":"Diagnos Laboratorium Utama Tbk","DGWG":"Delta Giri Wacana Tbk.","DIGI":"Arkadia Digital Media Tbk.","DILD":"Intiland Development Tbk.","DIVA":"Distribusi Voucher Nusantara T","DKFT":"Central Omega Resources Tbk.","DLTA":"Delta Djakarta Tbk.","DMAS":"Puradelta Lestari Tbk.","DMMX":"Digital Mediatama Maxima Tbk.","DMND":"Diamond Food Indonesia Tbk.","DNAR":"Bank Oke Indonesia Tbk.","DNET":"Indoritel Makmur Internasional","DOID":"Delta Dunia Makmur Tbk.","DOOH":"Era Media Sejahtera Tbk.","DOSS":"Global Sukses Digital Tbk.","DPNS":"Duta Pertiwi Nusantara Tbk.","DPUM":"Dua Putra Utama Makmur Tbk.","DRMA":"Dharma Polimetal Tbk.","DSFI":"Dharma Samudera Fishing Indust","DSNG":"Dharma Satya Nusantara Tbk.","DSSA":"Dian Swastatika Sentosa Tbk","DUCK":"Jaya Bersama Indo Tbk.","DUTI":"Duta Pertiwi Tbk","DVLA":"Darya-Varia Laboratoria Tbk.","DWGL":"Dwi Guna Laksana Tbk.","DYAN":"Dyandra Media International Tb","EAST":"Eastparc Hotel Tbk.","ECII":"Electronic City Indonesia Tbk.","EDGE":"Indointernet Tbk.","EKAD":"Ekadharma International Tbk.","ELIT":"Data Sinergitama Jaya Tbk.","ELPI":"Pelayaran Nasional Ekalya Purn","ELSA":"Elnusa Tbk.","ELTY":"Bakrieland Development Tbk.","EMAS":"Merdeka Gold Resources Tbk.","EMDE":"Megapolitan Developments Tbk.","EMTK":"Elang Mahkota Teknologi Tbk.","ENAK":"Champ Resto Indonesia Tbk.","ENRG":"Energi Mega Persada Tbk.","ENVY":"Envy Technologies Indonesia Tb","ENZO":"Morenzo Abadi Perkasa Tbk.","EPAC":"Megalestari Epack Sentosaraya","EPMT":"Enseval Putera Megatrading Tbk","ERAA":"Erajaya Swasembada Tbk.","ERAL":"Sinar Eka Selaras Tbk.","ERTX":"Eratex Djaja Tbk.","ESIP":"Sinergi Inti Plastindo Tbk.","ESSA":"ESSA Industries Indonesia Tbk.","ESTA":"Esta Multi Usaha Tbk.","ESTI":"Ever Shine Tex Tbk.","ETWA":"Eterindo Wahanatama Tbk","EURO":"Estee Gold Feet Tbk.","EXCL":"XL Axiata Tbk.","FAPA":"FAP Agri Tbk.","FAST":"Fast Food Indonesia Tbk.","FASW":"Fajar Surya Wisesa Tbk.","FILM":"MD Entertainment Tbk.","FIMP":"Fimperkasa Utama Tbk.","FIRE":"Alfa Energi Investama Tbk.","FISH":"FKS Multi Agro Tbk.","FITT":"Hotel Fitra International Tbk.","FLMC":"Falmaco Nonwoven Industri Tbk.","FMII":"Fortune Mate Indonesia Tbk","FOLK":"Multi Garam Utama Tbk.","FOOD":"Sentra Food Indonesia Tbk.","FORE":"Fore Kopi Indonesia Tbk.","FORU":"Fortune Indonesia Tbk","FORZ":"Forza Land Indonesia Tbk.","FPNI":"Lotte Chemical Titan Tbk.","FREN":"Smartfren Telecom Tbk.","FUJI":"Fuji Finance Indonesia Tbk.","FUTR":"Lini Imaji Kreasi Ekosistem Tb","FWCT":"Wijaya Cahaya Timber Tbk.","GAMA":"Aksara Global Development Tbk.","GDST":"Gunawan Dianjaya Steel Tbk.","GDYR":"Goodyear Indonesia Tbk.","GEMA":"Gema Grahasarana Tbk.","GEMS":"Golden Energy Mines Tbk.","GGRM":"Gudang Garam Tbk.","GGRP":"Gunung Raja Paksi Tbk.","GHON":"Gihon Telekomunikasi Indonesia","GIAA":"Garuda Indonesia (Persero) Tbk","GJTL":"Gajah Tunggal Tbk.","GLOB":"Globe Kita Terang Tbk.","GLVA":"Galva Technologies Tbk.","GMFI":"Garuda Maintenance Facility Ae","GMTD":"Gowa Makassar Tourism Developm","GOLD":"Visi Telekomunikasi Infrastruk","GOLF":"Intra Golflink Resorts Tbk.","GOLL":"Golden Plantation Tbk.","GOOD":"Garudafood Putra Putri Jaya Tb","GOTO":"GoTo Gojek Tokopedia Tbk.","GPRA":"Perdana Gapuraprima Tbk.","GPSO":"Geoprima Solusi Tbk.","GRIA":"Ingria Pratama Capitalindo Tbk","GRPH":"Griptha Putra Persada Tbk.","GRPM":"Graha Prima Mentari Tbk.","GSMF":"Equity Development Investment","GTBO":"Garda Tujuh Buana Tbk","GTRA":"Grahaprima Suksesmandiri Tbk.","GTSI":"GTS Internasional Tbk.","GULA":"Aman Agrindo Tbk.","GUNA":"Gunanusa Eramandiri Tbk.","GWSA":"Greenwood Sejahtera Tbk.","GZCO":"Gozco Plantations Tbk.","HADE":"Himalaya Energi Perkasa Tbk.","HAIS":"Hasnur Internasional Shipping","HAJJ":"Arsy Buana Travelindo Tbk.","HALO":"Haloni Jane Tbk.","HATM":"Habco Trans Maritima Tbk.","HBAT":"Minahasa Membangun Hebat Tbk.","HDFA":"Radana Bhaskara Finance Tbk.","HDIT":"Hensel Davest Indonesia Tbk.","HDTX":"Panasia Indo Resources Tbk.","HEAL":"Medikaloka Hermina Tbk.","HELI":"Jaya Trishindo Tbk.","HERO":"DFI Retail Nusantara Tbk.","HEXA":"Hexindo Adiperkasa Tbk.","HGII":"Hero Global Investment Tbk.","HILL":"Hillcon Tbk.","HITS":"Humpuss Intermoda Transportasi","HKMU":"HK Metals Utama Tbk.","HMSP":"H.M. Sampoerna Tbk.","HOKI":"Buyung Poetra Sembada Tbk.","HOME":"Hotel Mandarine Regency Tbk.","HOMI":"Grand House Mulia Tbk.","HOPE":"Harapan Duta Pertiwi Tbk.","HOTL":"Saraswati Griya Lestari Tbk.","HRME":"Menteng Heritage Realty Tbk.","HRTA":"Hartadinata Abadi Tbk.","HRUM":"Harum Energy Tbk.","HUMI":"Humpuss Maritim Internasional","HYGN":"Ecocare Indo Pasifik Tbk.","IATA":"MNC Energy Investments Tbk.","IBFN":"Intan Baru Prana Tbk.","IBOS":"Indo Boga Sukses Tbk.","IBST":"Inti Bangun Sejahtera Tbk.","ICBP":"Indofood CBP Sukses Makmur Tbk","ICON":"Island Concepts Indonesia Tbk.","IDEA":"Idea Indonesia Akademi Tbk.","IDPR":"Indonesia Pondasi Raya Tbk.","IFII":"Indonesia Fibreboard Industry","IFSH":"Ifishdeco Tbk.","IGAR":"Champion Pacific Indonesia Tbk","IIKP":"Inti Agri Resources Tbk","IKAI":"Intikeramik Alamasri Industri","IKAN":"Era Mandiri Cemerlang Tbk.","IKBI":"Sumi Indo Kabel Tbk.","IKPM":"Ikapharmindo Putramas Tbk.","IMAS":"Indomobil Sukses Internasional","IMJS":"Indomobil Multi Jasa Tbk.","IMPC":"Impack Pratama Industri Tbk.","INAF":"Indofarma Tbk.","INAI":"Indal Aluminium Industry Tbk.","INCF":"Indo Komoditi Korpora Tbk.","INCI":"Intanwijaya Internasional Tbk","INCO":"Vale Indonesia Tbk.","INDF":"Indofood Sukses Makmur Tbk.","INDO":"Royalindo Investa Wijaya Tbk.","INDR":"Indo-Rama Synthetics Tbk.","INDS":"Indospring Tbk.","INDX":"Tanah Laut Tbk","INDY":"Indika Energy Tbk.","INET":"Sinergi Inti Andalan Prima Tbk","INKP":"Indah Kiat Pulp & Paper Tbk.","INOV":"Inocycle Technology Group Tbk.","INPC":"Bank Artha Graha Internasional","INPP":"Indonesian Paradise Property T","INPS":"Indah Prakasa Sentosa Tbk.","INRU":"Toba Pulp Lestari Tbk.","INTA":"Intraco Penta Tbk.","INTD":"Inter Delta Tbk","INTP":"Indocement Tunggal Prakarsa Tb","IOTF":"Sumber Sinergi Makmur Tbk.","IPAC":"Era Graharealty Tbk.","IPCC":"Indonesia Kendaraan Terminal T","IPCM":"Jasa Armada Indonesia Tbk.","IPOL":"Indopoly Swakarsa Industry Tbk","IPPE":"Indo Pureco Pratama Tbk.","IPTV":"MNC Vision Networks Tbk.","IRRA":"Itama Ranoraya Tbk.","IRSX":"Aviana Sinar Abadi Tbk.","ISAP":"Isra Presisi Indonesia Tbk.","ISAT":"Indosat Tbk.","ISEA":"Indo American Seafoods Tbk.","ISSP":"Steel Pipe Industry of Indones","ITIC":"Indonesian Tobacco Tbk.","ITMA":"Sumber Energi Andalan Tbk.","ITMG":"Indo Tambangraya Megah Tbk.","JARR":"Jhonlin Agro Raya Tbk.","JAST":"Jasnita Telekomindo Tbk.","JATI":"Informasi Teknologi Indonesia","JAWA":"Jaya Agra Wattie Tbk.","JAYA":"Armada Berjaya Trans Tbk.","JECC":"Jembo Cable Company Tbk.","JGLE":"Graha Andrasentra Propertindo","JIHD":"Jakarta International Hotels &","JKON":"Jaya Konstruksi Manggala Prata","JKSW":"Jakarta Kyoei Steel Works Tbk.","JMAS":"Asuransi Jiwa Syariah Jasa Mit","JPFA":"Japfa Comfeed Indonesia Tbk.","JRPT":"Jaya Real Property Tbk.","JSKY":"Sky Energy Indonesia Tbk.","JSMR":"Jasa Marga (Persero) Tbk.","JSPT":"Jakarta Setiabudi Internasiona","JTPE":"Jasuindo Tiga Perkasa Tbk.","KAEF":"Kimia Farma Tbk.","KARW":"Meratus Jasa Prima Tbk.","KAYU":"Darmi Bersaudara Tbk.","KBAG":"Karya Bersama Anugerah Tbk.","KBLI":"KMI Wire & Cable Tbk.","KBLM":"Kabelindo Murni Tbk.","KBLV":"First Media Tbk.","KBRI":"Kertas Basuki Rachmat Indonesi","KDSI":"Kedawung Setia Industrial Tbk.","KDTN":"Puri Sentul Permai Tbk.","KEEN":"Kencana Energi Lestari Tbk.","KEJU":"Mulia Boga Raya Tbk.","KETR":"Ketrosden Triasmitra Tbk.","KIAS":"Keramika Indonesia Assosiasi T","KICI":"Kedaung Indah Can Tbk","KIJA":"Kawasan Industri Jababeka Tbk.","KING":"Hoffmen Cleanindo Tbk.","KINO":"Kino Indonesia Tbk.","KIOS":"Kioson Komersial Indonesia Tbk","KJEN":"Krida Jaringan Nusantara Tbk.","KKES":"Kusuma Kemindo Sentosa Tbk.","KKGI":"Resource Alam Indonesia Tbk.","KLAS":"Pelayaran Kurnia Lautan Semest","KLBF":"Kalbe Farma Tbk.","KLIN":"Klinko Karya Imaji Tbk.","KMDS":"Kurniamitra Duta Sentosa Tbk.","KMTR":"Kirana Megatara Tbk.","KOBX":"Kobexindo Tractors Tbk.","KOCI":"Kokoh Exa Nusantara Tbk.","KOIN":"Kokoh Inti Arebama Tbk","KOKA":"Koka Indonesia Tbk.","KONI":"Perdana Bangun Pusaka Tbk","KOPI":"Mitra Energi Persada Tbk.","KOTA":"DMS Propertindo Tbk.","KPAL":"Steadfast Marine Tbk.","KPAS":"Cottonindo Ariesta Tbk.","KPIG":"MNC Land Tbk.","KRAH":"Grand Kartech Tbk.","KRAS":"Krakatau Steel (Persero) Tbk.","KREN":"Quantum Clovera Investama Tbk.","KRYA":"Bangun Karya Perkasa Jaya Tbk.","KSIX":"Kentanix Supra International T","KUAS":"Ace Oldfields Tbk.","LABA":"Green Power Group Tbk.","LABS":"UBC Medical Indonesia Tbk.","LAJU":"Jasa Berdikari Logistics Tbk.","LAND":"Trimitra Propertindo Tbk.","LAPD":"Leyand International Tbk.","LCGP":"Eureka Prima Jakarta Tbk.","LCKM":"LCK Global Kedaton Tbk.","LEAD":"Logindo Samudramakmur Tbk.","LFLO":"Imago Mulia Persada Tbk.","LIFE":"MSIG Life Insurance Indonesia","LINK":"Link Net Tbk.","LION":"Lion Metal Works Tbk.","LIVE":"Homeco Victoria Makmur Tbk.","LMAS":"Limas Indonesia Makmur Tbk","LMAX":"Lupromax Pelumas Indonesia Tbk","LMPI":"Langgeng Makmur Industri Tbk.","LMSH":"Lionmesh Prima Tbk.","LOPI":"Logisticsplus International Tb","LPCK":"Lippo Cikarang Tbk","LPGI":"Lippo General Insurance Tbk.","LPIN":"Multi Prima Sejahtera Tbk","LPKR":"Lippo Karawaci Tbk.","LPLI":"Star Pacific Tbk","LPPF":"Matahari Department Store Tbk.","LPPS":"Lenox Pasifik Investama Tbk.","LRNA":"Eka Sari Lorena Transport Tbk.","LSIP":"PP London Sumatra Indonesia Tb","LTLS":"Lautan Luas Tbk.","LUCK":"Sentral Mitra Informatika Tbk.","LUCY":"Lima Dua Lima Tiga Tbk.","MABA":"Marga Abhinaya Abadi Tbk.","MAGP":"Multi Agro Gemilang Plantation","MAHA":"Mandiri Herindo Adiperkasa Tbk","MAIN":"Malindo Feedmill Tbk.","MAMI":"Mas Murni Indonesia Tbk","MANG":"Manggung Polahraya Tbk.","MAPA":"Map Aktif Adiperkasa Tbk.","MAPB":"MAP Boga Adiperkasa Tbk.","MAPI":"Mitra Adiperkasa Tbk.","MARI":"Mahaka Radio Integra Tbk.","MARK":"Mark Dynamics Indonesia Tbk.","MASA":"Multistrada Arah Sarana Tbk.","MASB":"Bank Multiarta Sentosa Tbk.","MAXI":"Maxindo Karya Anugerah Tbk.","MAYA":"Bank Mayapada Internasional Tb","MBAP":"Mitrabara Adiperdana Tbk.","MBMA":"Merdeka Battery Materials Tbk.","MBSS":"Mitrabahtera Segara Sejati Tbk","MBTO":"Martina Berto Tbk.","MCAS":"M Cash Integrasi Tbk.","MCOL":"Prima Andalan Mandiri Tbk.","MCOR":"Bank China Construction Bank I","MDIA":"Intermedia Capital Tbk.","MDIY":"Daya Intiguna Yasa Tbk.","MDKA":"Merdeka Copper Gold Tbk.","MDKI":"Emdeki Utama Tbk.","MDLA":"Medela Potentia Tbk.","MDLN":"Modernland Realty Tbk.","MDRN":"Modern Internasional Tbk.","MEDC":"Medco Energi Internasional Tbk","MEDS":"Hetzer Medical Indonesia Tbk.","MEGA":"Bank Mega Tbk.","MEJA":"Harta Djaya Karya Tbk.","MENN":"Menn Teknologi Indonesia Tbk.","MERI":"Merry Riana Edukasi Tbk.","MERK":"Merck Tbk.","META":"Nusantara Infrastructure Tbk.","MFIN":"Mandala Multifinance Tbk.","MFMI":"Multifiling Mitra Indonesia Tb","MGLV":"Panca Anugrah Wisesa Tbk.","MGNA":"Magna Investama Mandiri Tbk.","MGRO":"Mahkota Group Tbk.","MHKI":"Multi Hanna Kreasindo Tbk.","MICE":"Multi Indocitra Tbk.","MIDI":"Midi Utama Indonesia Tbk.","MIKA":"Mitra Keluarga Karyasehat Tbk.","MINA":"Sanurhasta Mitra Tbk.","MINE":"Sinar Terang Mandiri Tbk.","MIRA":"Mitra International Resources","MITI":"Mitra Investindo Tbk.","MKAP":"Multikarya Asia Pasifik Raya T","MKNT":"Mitra Komunikasi Nusantara Tbk","MKPI":"Metropolitan Kentjana Tbk.","MKTR":"Menthobi Karyatama Raya Tbk.","MLBI":"Multi Bintang Indonesia Tbk.","MLIA":"Mulia Industrindo Tbk","MLPL":"Multipolar Tbk.","MLPT":"Multipolar Technology Tbk.","MMIX":"Multi Medika Internasional Tbk","MMLP":"Mega Manunggal Property Tbk.","MNCN":"Media Nusantara Citra Tbk.","MOLI":"Madusari Murni Indah Tbk.","MORA":"Mora Telematika Indonesia Tbk.","MPIX":"Mitra Pedagang Indonesia Tbk.","MPMX":"Mitra Pinasthika Mustika Tbk.","MPOW":"Megapower Makmur Tbk.","MPPA":"Matahari Putra Prima Tbk.","MPRO":"Maha Properti Indonesia Tbk.","MPXL":"MPX Logistics International Tb","MRAT":"Mustika Ratu Tbk.","MREI":"Maskapai Reasuransi Indonesia","MSIE":"Multisarana Intan Eduka Tbk.","MSIN":"MNC Digital Entertainment Tbk.","MSJA":"Multi Spunindo Jaya Tbk.","MSKY":"MNC Sky Vision Tbk.","MSTI":"Mastersystem Infotama Tbk.","MTDL":"Metrodata Electronics Tbk.","MTEL":"Dayamitra Telekomunikasi Tbk.","MTFN":"Capitalinc Investment Tbk.","MTLA":"Metropolitan Land Tbk.","MTMH":"Murni Sadar Tbk.","MTPS":"Meta Epsi Tbk.","MTRA":"Mitra Pemuda Tbk.","MTSM":"Metro Realty Tbk.","MTWI":"Malacca Trust Wuwungan Insuran","MUTU":"Mutuagung Lestari Tbk.","MYOH":"Samindo Resources Tbk.","MYOR":"Mayora Indah Tbk.","MYRX":"Hanson International Tbk.","MYTX":"Asia Pacific Investama Tbk.","NAIK":"Adiwarna Anugerah Abadi Tbk.","NANO":"Nanotech Indonesia Global Tbk.","NASA":"Andalan Perkasa Abadi Tbk.","NASI":"Wahana Inti Makmur Tbk.","NATO":"Surya Permata Andalan Tbk.","NAYZ":"Hassana Boga Sejahtera Tbk.","NCKL":"Trimegah Bangun Persada Tbk.","NELY":"Pelayaran Nelly Dwi Putri Tbk.","NEST":"Esta Indonesia Tbk.","NETV":"MDTV Media Technologies Tbk.","NFCX":"NFC Indonesia Tbk.","NICE":"Adhi Kartiko Pratama Tbk.","NICK":"Charnic Capital Tbk.","NICL":"PAM Mineral Tbk.","NIKL":"Pelat Timah Nusantara Tbk.","NINE":"Techno9 Indonesia Tbk.","NIPS":"Nipress Tbk.","NIRO":"City Retail Developments Tbk.","NISP":"Bank OCBC NISP Tbk.","NOBU":"Bank Nationalnobu Tbk.","NPGF":"Nusa Palapa Gemilang Tbk.","NRCA":"Nusa Raya Cipta Tbk.","NSSS":"Nusantara Sawit Sejahtera Tbk.","NTBK":"Nusatama Berkah Tbk.","NUSA":"Sinergi Megah Internusa Tbk.","NZIA":"Nusantara Almazia Tbk.","OASA":"Maharaksa Biru Energi Tbk.","OBAT":"Brigit Biofarmaka Teknologi Tbk.","OBMD":"OBM Drilchem Tbk.","OCAP":"Onix Capital Tbk.","OILS":"Indo Oil Perkasa Tbk.","OKAS":"Ancora Indonesia Resources Tbk","OLIV":"Oscar Mitra Sukses Sejahtera T","OMED":"Jayamas Medica Industri Tbk.","OMRE":"Indonesia Prima Property Tbk","OPMS":"Optima Prima Metal Sinergi Tbk","PACK":"Abadi Nusantara Hijau Investam","PADA":"Personel Alih Daya Tbk.","PADI":"Minna Padi Investama Sekuritas","PALM":"Provident Investasi Bersama Tb","PAMG":"Bima Sakti Pertiwi Tbk.","PANI":"Pantai Indah Kapuk Dua Tbk.","PANR":"Panorama Sentrawisata Tbk.","PANS":"Panin Sekuritas Tbk.","PART":"Cipta Perdana Lancar Tbk.","PBID":"Panca Budi Idaman Tbk.","PBRX":"Pan Brothers Tbk.","PBSA":"Paramita Bangun Sarana Tbk.","PCAR":"Prima Cakrawala Abadi Tbk.","PDES":"Destinasi Tirta Nusantara Tbk","PDPP":"Primadaya Plastisindo Tbk.","PEGE":"Panca Global Kapital Tbk.","PEHA":"Phapros Tbk.","PEVE":"Penta Valent Tbk.","PGAS":"Perusahaan Gas Negara Tbk.","PGEO":"Pertamina Geothermal Energy Tb","PGJO":"Tourindo Guide Indonesia Tbk.","PGLI":"Pembangunan Graha Lestari Inda","PGUN":"Pradiksi Gunatama Tbk.","PICO":"Pelangi Indah Canindo Tbk","PIPA":"Multi Makmur Lemindo Tbk.","PJAA":"Pembangunan Jaya Ancol Tbk.","PKPK":"Perdana Karya Perkasa Tbk","PLAN":"Planet Properindo Jaya Tbk.","PLAS":"Polaris Investama Tbk","PLIN":"Plaza Indonesia Realty Tbk.","PMJS":"Putra Mandiri Jembar Tbk.","PMMP":"Panca Mitra Multiperdana Tbk.","PNBN":"Bank Pan Indonesia Tbk","PNBS":"Bank Panin Dubai Syariah Tbk.","PNGO":"Pinago Utama Tbk.","PNIN":"Paninvest Tbk.","PNLF":"Panin Financial Tbk.","PNSE":"Pudjiadi & Sons Tbk.","POLA":"Pool Advista Finance Tbk.","POLI":"Pollux Hotels Group Tbk.","POLL":"Pollux Properties Indonesia Tb","POLU":"Golden Flower Tbk.","POLY":"Asia Pacific Fibers Tbk","POOL":"Pool Advista Indonesia Tbk.","PORT":"Nusantara Pelabuhan Handal Tbk","POSA":"Bliss Properti Indonesia Tbk.","POWR":"Cikarang Listrindo Tbk.","PPGL":"Prima Globalindo Logistik Tbk.","PPRE":"PP Presisi Tbk.","PPRI":"Paperocks Indonesia Tbk.","PPRO":"PP Properti Tbk.","PRAS":"Prima Alloy Steel Universal Tb","PRAY":"Famon Awal Bros Sedaya Tbk.","PRDA":"Prodia Widyahusada Tbk.","PRIM":"Royal Prima Tbk.","PSAB":"J Resources Asia Pasifik Tbk.","PSAT":"Pancaran Samudera Transport Tbk.","PSDN":"Prasidha Aneka Niaga Tbk","PSGO":"Palma Serasih Tbk.","PSKT":"Red Planet Indonesia Tbk.","PSSI":"IMC Pelita Logistik Tbk.","PTBA":"Bukit Asam Tbk.","PTDU":"Djasa Ubersakti Tbk.","PTIS":"Indo Straits Tbk.","PTMP":"Mitra Pack Tbk.","PTMR":"Master Print Tbk.","PTPP":"PP (Persero) Tbk.","PTPS":"Pulau Subur Tbk.","PTPW":"Pratama Widya Tbk.","PTRO":"Petrosea Tbk.","PTSN":"Sat Nusapersada Tbk","PTSP":"Pioneerindo Gourmet Internatio","PUDP":"Pudjiadi Prestige Tbk.","PURA":"Putra Rajawali Kencana Tbk.","PURE":"Trinitan Metals and Minerals T","PURI":"Puri Global Sukses Tbk.","PWON":"Pakuwon Jati Tbk.","PYFA":"Pyridam Farma Tbk","PZZA":"Sarimelati Kencana Tbk.","RAAM":"Tripar Multivision Plus Tbk.","RAFI":"Sari Kreasi Boga Tbk.","RAJA":"Rukun Raharja Tbk.","RALS":"Ramayana Lestari Sentosa Tbk.","RANC":"Supra Boga Lestari Tbk.","RATU":"Raharja Energi Cepu Tbk.","RBMS":"Ristia Bintang Mahkotasejati T","RCCC":"Utama Radar Cahaya Tbk.","RDTX":"Roda Vivatex Tbk","REAL":"Repower Asia Indonesia Tbk.","RELF":"Graha Mitra Asia Tbk.","RELI":"Reliance Sekuritas Indonesia T","RGAS":"Kian Santang Muliatama Tbk.","RICY":"Ricky Putra Globalindo Tbk","RIGS":"Rig Tenders Indonesia Tbk.","RIMO":"Rimo International Lestari Tbk","RISE":"Jaya Sukses Makmur Sentosa Tbk","RLCO":"Realco Sukses Sejahtera Tbk.","RMKE":"RMK Energy Tbk.","RMKO":"Royaltama Mulia Kontraktorindo","ROCK":"Rockfields Properti Indonesia","RODA":"Pikko Land Development Tbk.","RONY":"Aesler Grup Internasional Tbk.","ROTI":"Nippon Indosari Corpindo Tbk.","RSCH":"Charlie Hospital Semarang Tbk.","RSGK":"Kedoya Adyaraya Tbk.","RUIS":"Radiant Utama Interinsco Tbk.","RUNS":"Global Sukses Solusi Tbk.","SAFE":"Steady Safe Tbk","SAGE":"Saptausaha Gemilangindah Tbk.","SAME":"Sarana Meditama Metropolitan T","SAMF":"Saraswanti Anugerah Makmur Tbk","SAPX":"Satria Antaran Prima Tbk.","SATU":"Kota Satu Properti Tbk.","SBAT":"Sejahtera Bintang Abadi Textil","SBMA":"Surya Biru Murni Acetylene Tbk","SCCO":"Supreme Cable Manufacturing &","SCMA":"Surya Citra Media Tbk.","SCNP":"Selaras Citra Nusantara Perkas","SCPI":"Organon Pharma Indonesia Tbk.","SDMU":"Sidomulyo Selaras Tbk.","SDPC":"Millennium Pharmacon Internati","SDRA":"Bank Woori Saudara Indonesia 1","SEMA":"Semacom Integrated Tbk.","SFAN":"Surya Fajar Capital Tbk.","SGER":"Sumber Global Energy Tbk.","SGRO":"Sampoerna Agro Tbk.","SHID":"Hotel Sahid Jaya International","SHIP":"Sillo Maritime Perdana Tbk.","SICO":"Sigma Energy Compressindo Tbk.","SIDO":"Industri Jamu dan Farmasi Sido","SILO":"Siloam International Hospitals","SIMA":"Siwani Makmur Tbk","SIMP":"Salim Ivomas Pratama Tbk.","SINI":"Singaraja Putra Tbk.","SIPD":"Sreeya Sewu Indonesia Tbk.","SKBM":"Sekar Bumi Tbk.","SKLT":"Sekar Laut Tbk.","SKRN":"Superkrane Mitra Utama Tbk.","SKYB":"Northcliff Citranusa Indonesia","SLIS":"Gaya Abadi Sempurna Tbk.","SMAR":"Smart Tbk.","SMBR":"Semen Baturaja Tbk.","SMCB":"Solusi Bangun Indonesia Tbk.","SMDM":"Suryamas Dutamakmur Tbk.","SMDR":"Samudera Indonesia  Tbk.","SMGA":"Sumber Mineral Global Abadi Tb","SMGR":"Semen Indonesia (Persero) Tbk.","SMIL":"Sarana Mitra Luas Tbk.","SMKL":"Satyamitra Kemas Lestari Tbk.","SMKM":"Sumber Mas Konstruksi Tbk.","SMLE":"Sinergi Multi Lestarindo Tbk.","SMMA":"Sinarmas Multiartha Tbk.","SMMT":"Golden Eagle Energy Tbk.","SMRA":"Summarecon Agung Tbk.","SMRU":"SMR Utama Tbk.","SMSM":"Selamat Sempurna Tbk.","SNLK":"Sunter Lakeside Hotel Tbk.","SOCI":"Soechi Lines Tbk.","SOFA":"Boston Furniture Industries Tb","SOHO":"Soho Global Health Tbk.","SOLA":"Xolare RCR Energy Tbk.","SONA":"Sona Topas Tourism Industry Tb","SOSS":"Shield On Service Tbk.","SOTS":"Satria Mega Kencana Tbk.","SOUL":"Mitra Tirta Buwana Tbk.","SPMA":"Suparma Tbk.","SPRE":"Soraya Berjaya Indonesia Tbk.","SPTO":"Surya Pertiwi Tbk.","SQMI":"Wilton Makmur Indonesia Tbk.","SRAJ":"Sejahteraraya Anugrahjaya Tbk.","SRIL":"Sri Rejeki Isman Tbk.","SRSN":"Indo Acidatama Tbk","SRTG":"Saratoga Investama Sedaya Tbk.","SSIA":"Surya Semesta Internusa Tbk.","SSMS":"Sawit Sumbermas Sarana Tbk.","SSTM":"Sunson Textile Manufacture Tbk","STAA":"Sumber Tani Agung Resources Tb","STAR":"Buana Artha Anugerah Tbk.","STRK":"Lovina Beach Brewery Tbk.","STTP":"Siantar Top Tbk.","SUGI":"Sugih Energy Tbk.","SULI":"SLJ Global Tbk.","SUNI":"Sunindo Pratama Tbk.","SUPA":"Super Bank Indonesia Tbk.","SUPR":"Solusi Tunas Pratama Tbk.","SURE":"Super Energy Tbk.","SURI":"Maja Agung Latexindo Tbk.","SWAT":"Sriwahana Adityakarta Tbk.","SWID":"Saraswanti Indoland Developmen","TALF":"Tunas Alfin Tbk.","TAMA":"Lancartama Sejati Tbk.","TAMU":"Pelayaran Tamarin Samudra Tbk.","TAPG":"Triputra Agro Persada Tbk.","TARA":"Agung Semesta Sejahtera Tbk.","TAXI":"Express Transindo Utama Tbk.","TAYS":"Jaya Swarasa Agung Tbk.","TBIG":"Tower Bersama Infrastructure T","TBLA":"Tunas Baru Lampung Tbk.","TBMS":"Tembaga Mulia Semanan Tbk.","TCID":"Mandom Indonesia Tbk.","TCPI":"Transcoal Pacific Tbk.","TDPM":"Tianrong Chemicals Industry Tb","TEBE":"Dana Brata Luhur Tbk.","TECH":"Indosterling Technomedia Tbk.","TELE":"Omni Inovasi Indonesia Tbk.","TFAS":"Telefast Indonesia Tbk.","TFCO":"Tifico Fiber Indonesia Tbk.","TGKA":"Tigaraksa Satria Tbk.","TGRA":"Terregra Asia Energy Tbk.","TGUK":"Platinum Wahab Nusantara Tbk.","TIFA":"KDB Tifa Finance Tbk.","TINS":"Timah Tbk.","TIRA":"Tira Austenite Tbk","TIRT":"Tirta Mahakam Resources Tbk","TKIM":"Pabrik Kertas Tjiwi Kimia Tbk.","TLDN":"Teladan Prima Agro Tbk.","TLKM":"Telkom Indonesia (Persero) Tbk","TMAS":"Temas Tbk.","TMPO":"Tempo Intimedia Tbk.","TNCA":"Trimuda Nuansa Citra Tbk.","TOBA":"TBS Energi Utama Tbk.","TOOL":"Rohartindo Nusantara Luas Tbk.","TOPS":"Totalindo Eka Persada Tbk.","TOSK":"Topindo Solusi Komunika Tbk.","TOTL":"Total Bangun Persada Tbk.","TOTO":"Surya Toto Indonesia Tbk.","TOWR":"Sarana Menara Nusantara Tbk.","TOYS":"Sunindo Adipersada Tbk.","TPIA":"Chandra Asri Pacific Tbk.","TPMA":"Trans Power Marine Tbk.","TRAM":"Trada Alam Minera Tbk.","TRGU":"Cerestar Indonesia Tbk.","TRIL":"Triwira Insanlestari Tbk.","TRIM":"Trimegah Sekuritas Indonesia T","TRIN":"Perintis Triniti Properti Tbk.","TRIO":"Trikomsel Oke Tbk.","TRIS":"Trisula International Tbk.","TRJA":"Transkon Jaya Tbk.","TRON":"Teknologi Karya Digital Nusa T","TRST":"Trias Sentosa Tbk.","TRUE":"Triniti Dinamik Tbk.","TRUK":"Guna Timur Raya Tbk.","TRUS":"Trust Finance Indonesia Tbk","TSPC":"Tempo Scan Pacific Tbk.","TUGU":"Asuransi Tugu Pratama Indonesi","TYRE":"King Tire Indonesia Tbk.","UANG":"Pakuan Tbk.","UCID":"Uni-Charm Indonesia Tbk.","UDNG":"Agro Bahari Nusantara Tbk.","UFOE":"Damai Sejahtera Abadi Tbk.","ULTJ":"Ultrajaya Milk Industry & Trad","UNIC":"Unggul Indah Cahaya Tbk.","UNIQ":"Ulima Nitra Tbk.","UNIT":"Nusantara Inti Corpora Tbk","UNSP":"Bakrie Sumatera Plantations Tb","UNTD":"Terang Dunia Internusa Tbk.","UNTR":"United Tractors Tbk.","UNVR":"Unilever Indonesia Tbk.","URBN":"Urban Jakarta Propertindo Tbk.","UVCR":"Trimegah Karya Pratama Tbk.","VAST":"Vastland Indonesia Tbk.","VERN":"Verona Indah Pictures Tbk.","VICI":"Victoria Care Indonesia Tbk.","VICO":"Victoria Investama Tbk.","VINS":"Victoria Insurance Tbk.","VISI":"Satu Visi Putra Tbk.","VIVA":"Visi Media Asia Tbk.","VKTR":"VKTR Teknologi Mobilitas Tbk.","VOKS":"Voksel Electric Tbk.","VRNA":"Mizuho Leasing Indonesia Tbk.","VTNY":"Venteny Fortuna International","WAPO":"Wahana Pronatural Tbk.","WBSA":"BSA Logistics Indonesia Tbk.","WEGE":"Wijaya Karya Bangunan Gedung T","WEHA":"WEHA Transportasi Indonesia Tb","WGSH":"Wira Global Solusi Tbk.","WICO":"Wicaksana Overseas Internation","WIDI":"Widiant Jaya Krenindo Tbk.","WIFI":"Solusi Sinergi Digital Tbk.","WIIM":"Wismilak Inti Makmur Tbk.","WIKA":"Wijaya Karya (Persero) Tbk.","WINE":"Hatten Bali Tbk.","WINR":"Winner Nusantara Jaya Tbk.","WINS":"Wintermar Offshore Marine Tbk.","WIRG":"WIR ASIA Tbk.","WMPP":"Widodo Makmur Perkasa Tbk.","WMUU":"Widodo Makmur Unggas Tbk.","WOMF":"Wahana Ottomitra Multiartha Tb","WOOD":"Integra Indocabinet Tbk.","WOWS":"Ginting Jaya Energi Tbk.","WSBP":"Waskita Beton Precast Tbk.","WSKT":"Waskita Karya (Persero) Tbk.","WTON":"Wijaya Karya Beton Tbk.","YELO":"Yelooo Integra Datanet Tbk.","YOII":"Asuransi Digital Bersama Tbk.","YPAS":"Yanaprima Hastapersada Tbk","YULE":"Yulie Sekuritas Indonesia Tbk.","ZATA":"Bersama Zatta Jaya Tbk.","ZBRA":"Dosni Roha Indonesia Tbk.","ZINC":"Kapuas Prima Coal Tbk.","ZONE":"Mega Perintis Tbk.","ZYRX":"Zyrexindo Mandiri Buana Tbk."};
+</script>
+<script>
+/* =========================================================================
+   ENGINE JURNAL SAHAM — lot-based (specific identification)
+   Modul murni tanpa DOM. Dipakai di app + diuji terpisah di Node.
+   Semua angka uang dalam Rupiah (number). 1 lot = 100 lembar.
+   ========================================================================= */
+
+(function (root) {
+  'use strict';
+
+  const LEMBAR_PER_LOT = 100;
+
+  // Pembulatan uang ke rupiah penuh (hindari floating error)
+  function rupiah(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+  }
+
+  // ---- Perhitungan nilai transaksi ------------------------------------
+  // Beli: total keluar = (harga * lembar) + fee
+  // Jual: total masuk  = (harga * lembar) - fee
+  function nilaiBeli(harga, lembar, fee) {
+    return rupiah(harga * lembar + fee);
+  }
+  function nilaiJual(harga, lembar, fee) {
+    return rupiah(harga * lembar - fee);
+  }
+
+  // Hitung fee dari rate persen (mis. 0.15% beli). Dibulatkan ke rupiah.
+  function hitungFee(harga, lembar, ratePersen) {
+    return rupiah(harga * lembar * (ratePersen / 100));
+  }
+
+  /* =====================================================================
+     STATE
+     transactions: array of:
+       BELI : {id, type:'BELI', kode, tgl, hargaPerLembar, lot, lembar, fee, sisaLembar}
+       JUAL : {id, type:'JUAL', kode, tgl, hargaPerLembar, lembar, fee, realizedPL, alokasi:[{beliId, lembar, costBasis, proceeds}]}
+       DIVIDEN: {id, type:'DIVIDEN', kode, tgl, totalBersih, lembarRef}
+     sisaLembar pada BELI berkurang saat lot dijual.
+     ===================================================================== */
+
+  function emptyState() {
+    return { transactions: [] };
+  }
+
+  // ---- Tambah pembelian (buat lot baru) -------------------------------
+  function addBeli(state, { id, kode, tgl, hargaPerLembar, lot, fee }) {
+    if (!kode || typeof kode !== 'string') throw new Error('Kode saham wajib');
+    kode = kode.toUpperCase().trim();
+    lot = Math.floor(Number(lot));
+    if (!(lot > 0)) throw new Error('Lot harus > 0');
+    hargaPerLembar = Number(hargaPerLembar);
+    if (!(hargaPerLembar > 0)) throw new Error('Harga harus > 0');
+    fee = Number(fee) || 0;
+    if (fee < 0) throw new Error('Fee tidak boleh negatif');
+
+    const lembar = lot * LEMBAR_PER_LOT;
+    const tx = {
+      id: id || genId(),
+      type: 'BELI',
+      kode,
+      tgl: tgl || todayISO(),
+      hargaPerLembar: rupiah(hargaPerLembar),
+      lot,
+      lembar,
+      fee: rupiah(fee),
+      sisaLembar: lembar,
+    };
+    state.transactions.push(tx);
+    return tx;
+  }
+
+  // ---- Daftar lot terbuka untuk satu kode (FIFO order by tgl, lalu id) --
+  function lotTerbuka(state, kode) {
+    kode = kode.toUpperCase().trim();
+    return state.transactions
+      .filter((t) => t.type === 'BELI' && t.kode === kode && t.sisaLembar > 0)
+      .sort((a, b) => (a.tgl < b.tgl ? -1 : a.tgl > b.tgl ? 1 : (a.id < b.id ? -1 : 1)));
+  }
+
+  // Cost basis per lembar untuk sebuah lot BELI (termasuk porsi fee beli)
+  function costPerLembar(beliTx) {
+    // fee dialokasikan proporsional terhadap lembar awal
+    const totalCost = beliTx.hargaPerLembar * beliTx.lembar + beliTx.fee;
+    return totalCost / beliTx.lembar;
+  }
+
+  // ---- Jual berdasarkan pilihan lot -----------------------------------
+  // pilihan: array of {beliId, lot}  (lot yang ingin dijual dari tiap lot beli)
+  // hargaJual per lembar, fee total jual (akan dialokasi proporsional ke lembar terjual)
+  function addJual(state, { id, kode, tgl, hargaPerLembar, fee, pilihan }) {
+    kode = (kode || '').toUpperCase().trim();
+    hargaPerLembar = Number(hargaPerLembar);
+    if (!(hargaPerLembar > 0)) throw new Error('Harga jual harus > 0');
+    fee = Number(fee) || 0;
+    if (fee < 0) throw new Error('Fee tidak boleh negatif');
+    if (!Array.isArray(pilihan) || pilihan.length === 0)
+      throw new Error('Pilih minimal satu lot untuk dijual');
+
+    // Validasi & hitung total lembar dijual
+    let totalLembarJual = 0;
+    const detail = [];
+    for (const p of pilihan) {
+      const beli = state.transactions.find(
+        (t) => t.id === p.beliId && t.type === 'BELI'
+      );
+      if (!beli) throw new Error('Lot beli tidak ditemukan: ' + p.beliId);
+      if (beli.kode !== kode) throw new Error('Lot beli beda kode saham');
+      const lotJual = Math.floor(Number(p.lot));
+      if (!(lotJual > 0)) continue; // skip 0
+      const lembarJual = lotJual * LEMBAR_PER_LOT;
+      if (lembarJual > beli.sisaLembar)
+        throw new Error(
+          `Lot ${beli.kode} tidak cukup: minta ${lotJual} lot, sisa ${beli.sisaLembar / LEMBAR_PER_LOT} lot`
+        );
+      detail.push({ beli, lembarJual });
+      totalLembarJual += lembarJual;
+    }
+    if (totalLembarJual === 0) throw new Error('Tidak ada lot valid dijual');
+
+    // Alokasi fee jual proporsional ke tiap lembar terjual
+    const feePerLembar = fee / totalLembarJual;
+
+    let realizedPL = 0;
+    const alokasi = [];
+    for (const d of detail) {
+      const cpl = costPerLembar(d.beli);
+      const costBasis = rupiah(cpl * d.lembarJual);
+      const proceedsKotor = hargaPerLembar * d.lembarJual;
+      const feeAlok = feePerLembar * d.lembarJual;
+      const proceeds = rupiah(proceedsKotor - feeAlok);
+      const pl = rupiah(proceeds - costBasis);
+      realizedPL = rupiah(realizedPL + pl);
+      alokasi.push({
+        beliId: d.beli.id,
+        lembar: d.lembarJual,
+        lot: d.lembarJual / LEMBAR_PER_LOT,
+        costBasis,
+        proceeds,
+        pl,
+      });
+      // kurangi sisa lot
+      d.beli.sisaLembar -= d.lembarJual;
+    }
+
+    const tx = {
+      id: id || genId(),
+      type: 'JUAL',
+      kode,
+      tgl: tgl || todayISO(),
+      hargaPerLembar: rupiah(hargaPerLembar),
+      lembar: totalLembarJual,
+      lot: totalLembarJual / LEMBAR_PER_LOT,
+      fee: rupiah(fee),
+      realizedPL,
+      alokasi,
+    };
+    state.transactions.push(tx);
+    return tx;
+  }
+
+  // ---- Tombol cepat: bangun "pilihan" otomatis ------------------------
+  // mode 'FIFO' : ambil lot terlama dulu
+  // mode 'PROFIT': ambil lot dengan gain/lembar tertinggi dulu (pada hargaSekarang)
+  function buatPilihanOtomatis(state, kode, lotDiminta, mode, hargaSekarang) {
+    const lots = lotTerbuka(state, kode).slice();
+    if (mode === 'PROFIT') {
+      const hrg = Number(hargaSekarang);
+      lots.sort((a, b) => {
+        const ga = hrg - costPerLembar(a);
+        const gb = hrg - costPerLembar(b);
+        return gb - ga; // gain tertinggi dulu
+      });
+    }
+    // FIFO sudah terurut by tgl dari lotTerbuka
+    let sisa = Math.floor(Number(lotDiminta));
+    const pilihan = [];
+    for (const lot of lots) {
+      if (sisa <= 0) break;
+      const lotTersedia = lot.sisaLembar / LEMBAR_PER_LOT;
+      const ambil = Math.min(lotTersedia, sisa);
+      if (ambil > 0) {
+        pilihan.push({ beliId: lot.id, lot: ambil });
+        sisa -= ambil;
+      }
+    }
+    return { pilihan, kurang: sisa }; // kurang>0 berarti lot tdk cukup
+  }
+
+  // ---- Dividen --------------------------------------------------------
+  function addDividen(state, { id, kode, tgl, totalBersih }) {
+    kode = (kode || '').toUpperCase().trim();
+    totalBersih = Number(totalBersih);
+    if (!(totalBersih > 0)) throw new Error('Nominal dividen harus > 0');
+    const tx = {
+      id: id || genId(),
+      type: 'DIVIDEN',
+      kode,
+      tgl: tgl || todayISO(),
+      totalBersih: rupiah(totalBersih),
+    };
+    state.transactions.push(tx);
+    return tx;
+  }
+
+  // ---- Hapus transaksi (dengan rollback aman) -------------------------
+  // Menghapus BELI hanya boleh jika lot belum pernah dijual (sisaLembar==lembar)
+  // Menghapus JUAL akan mengembalikan sisaLembar ke lot terkait.
+  function hapusTransaksi(state, txId) {
+    const idx = state.transactions.findIndex((t) => t.id === txId);
+    if (idx === -1) throw new Error('Transaksi tidak ditemukan');
+    const tx = state.transactions[idx];
+
+    if (tx.type === 'BELI') {
+      if (tx.sisaLembar !== tx.lembar)
+        throw new Error(
+          'Tidak bisa hapus pembelian ini karena sebagian/seluruh sudah terjual. Hapus transaksi jual terkait dulu.'
+        );
+      state.transactions.splice(idx, 1);
+    } else if (tx.type === 'JUAL') {
+      // kembalikan lembar ke lot
+      for (const a of tx.alokasi) {
+        const beli = state.transactions.find((t) => t.id === a.beliId);
+        if (beli) beli.sisaLembar += a.lembar;
+      }
+      state.transactions.splice(idx, 1);
+    } else {
+      state.transactions.splice(idx, 1);
+    }
+    return true;
+  }
+
+  /* =====================================================================
+     RINGKASAN / LAPORAN
+     ===================================================================== */
+
+  // Posisi portfolio per kode (yang masih punya sisa lembar)
+  // hargaSekarangMap: {kode: harga} opsional untuk floating P/L
+  function ringkasanPortfolio(state, hargaSekarangMap) {
+    hargaSekarangMap = hargaSekarangMap || {};
+    const byKode = {};
+
+    for (const t of state.transactions) {
+      if (t.type !== 'BELI') continue;
+      if (t.sisaLembar <= 0) continue;
+      if (!byKode[t.kode]) {
+        byKode[t.kode] = { kode: t.kode, lembar: 0, totalCost: 0 };
+      }
+      const cpl = costPerLembar(t);
+      byKode[t.kode].lembar += t.sisaLembar;
+      byKode[t.kode].totalCost += cpl * t.sisaLembar;
+    }
+
+    const rows = [];
+    for (const kode in byKode) {
+      const p = byKode[kode];
+      const avg = p.lembar > 0 ? p.totalCost / p.lembar : 0;
+      const hargaNow = Number(hargaSekarangMap[kode]);
+      const punyaHarga = hargaNow > 0;
+      const nilaiPasar = punyaHarga ? hargaNow * p.lembar : null;
+      const totalCost = rupiah(p.totalCost);
+      const floatingPL = punyaHarga ? rupiah(nilaiPasar - totalCost) : null;
+      const floatingPct =
+        punyaHarga && totalCost > 0 ? (floatingPL / totalCost) * 100 : null;
+      rows.push({
+        kode,
+        lot: p.lembar / LEMBAR_PER_LOT,
+        lembar: p.lembar,
+        avgPrice: rupiah(avg),
+        totalCost,
+        hargaSekarang: punyaHarga ? rupiah(hargaNow) : null,
+        nilaiPasar: punyaHarga ? rupiah(nilaiPasar) : null,
+        floatingPL,
+        floatingPct,
+      });
+    }
+    rows.sort((a, b) => (a.kode < b.kode ? -1 : 1));
+    return rows;
+  }
+
+  // Total realized P/L (semua transaksi jual)
+  function totalRealized(state) {
+    return rupiah(
+      state.transactions
+        .filter((t) => t.type === 'JUAL')
+        .reduce((s, t) => s + t.realizedPL, 0)
+    );
+  }
+
+  // Total dividen diterima
+  function totalDividen(state) {
+    return rupiah(
+      state.transactions
+        .filter((t) => t.type === 'DIVIDEN')
+        .reduce((s, t) => s + t.totalBersih, 0)
+    );
+  }
+
+  // Total modal tertanam saat ini (cost dari lot terbuka)
+  function totalModalTertanam(state) {
+    let total = 0;
+    for (const t of state.transactions) {
+      if (t.type === 'BELI' && t.sisaLembar > 0) {
+        total += costPerLembar(t) * t.sisaLembar;
+      }
+    }
+    return rupiah(total);
+  }
+
+  // Ringkasan global
+  function ringkasanGlobal(state, hargaSekarangMap) {
+    const port = ringkasanPortfolio(state, hargaSekarangMap);
+    const realized = totalRealized(state);
+    const dividen = totalDividen(state);
+    const modal = totalModalTertanam(state);
+
+    let floating = 0;
+    let adaFloating = false;
+    let nilaiPasarTotal = 0;
+    for (const r of port) {
+      if (r.floatingPL !== null) {
+        floating += r.floatingPL;
+        nilaiPasarTotal += r.nilaiPasar;
+        adaFloating = true;
+      } else {
+        nilaiPasarTotal += r.totalCost; // fallback pakai cost bila tak ada harga
+      }
+    }
+    floating = adaFloating ? rupiah(floating) : null;
+
+    return {
+      modalTertanam: modal,
+      nilaiPasarTotal: rupiah(nilaiPasarTotal),
+      floatingPL: floating,
+      realizedPL: realized,
+      dividen,
+      // total cuan = realized + dividen + floating(jika ada)
+      totalCuan: rupiah(realized + dividen + (floating || 0)),
+    };
+  }
+
+  // ---- util -----------------------------------------------------------
+  function genId() {
+    return 'tx_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+  }
+  function todayISO() {
+    const d = new Date();
+    return d.toISOString().slice(0, 10);
+  }
+
+  const API = {
+    LEMBAR_PER_LOT,
+    rupiah,
+    nilaiBeli,
+    nilaiJual,
+    hitungFee,
+    emptyState,
+    addBeli,
+    addJual,
+    addDividen,
+    lotTerbuka,
+    costPerLembar,
+    buatPilihanOtomatis,
+    hapusTransaksi,
+    ringkasanPortfolio,
+    ringkasanGlobal,
+    totalRealized,
+    totalDividen,
+    totalModalTertanam,
+    genId,
+    todayISO,
+  };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = API;
+  } else {
+    root.JurnalEngine = API;
+  }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+/* ============================================================
+   APP.JS — UI controller. Engine & EMITEN sudah diinject sebelum file ini.
+   ============================================================ */
+(function () {
+'use strict';
+var E = window.JurnalEngine;
+var EMITEN = window.EMITEN_DATA || {};
+var STORE_KEY = 'jurnalSaham_v1';
+var PRICE_KEY = 'jurnalSaham_prices_v1';
+
+// ---------- STATE ----------
+var state = E.emptyState();
+var prices = {};            // {kode: harga sekarang}
+var currentTab = 'portfolio';
+var txFilter = 'ALL';
+
+// ---------- PERSISTENCE ----------
+function save() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    localStorage.setItem(PRICE_KEY, JSON.stringify(prices));
+  } catch (e) {
+    toast('Gagal menyimpan: penyimpanan penuh?', 'err');
+  }
+}
+function load() {
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      var p = JSON.parse(raw);
+      if (p && Array.isArray(p.transactions)) state = p;
+    }
+    var rp = localStorage.getItem(PRICE_KEY);
+    if (rp) prices = JSON.parse(rp) || {};
+  } catch (e) {
+    state = E.emptyState();
+    prices = {};
+  }
+}
+
+// ---------- FORMAT ----------
+function fmtRp(n, opt) {
+  opt = opt || {};
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  var neg = n < 0;
+  var abs = Math.abs(Math.round(n));
+  var s = abs.toLocaleString('id-ID');
+  var out = (opt.sign && !neg ? '+' : '') + (neg ? '-' : '') + 'Rp ' + s;
+  return out;
+}
+function fmtNum(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return Number(n).toLocaleString('id-ID');
+}
+function fmtPct(n, sign) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return (sign && n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+}
+function fmtTgl(iso) {
+  if (!iso) return '';
+  var p = iso.split('-');
+  if (p.length !== 3) return iso;
+  var bln = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  return parseInt(p[2], 10) + ' ' + bln[parseInt(p[1], 10) - 1] + ' ' + p[0];
+}
+function namaSaham(kode) {
+  return EMITEN[kode] || '';
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// ---------- DOM helpers ----------
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, html) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+function showErr(id, on) {
+  var e = $(id);
+  if (e) e.classList.toggle('show', !!on);
+}
+function markInp(id, on) {
+  var e = $(id);
+  if (e) e.classList.toggle('err', !!on);
+}
+
+// ============================================================
+// RENDER — HERO + PORTFOLIO + RIWAYAT
+// ============================================================
+function renderAll() {
+  renderHero();
+  renderPortfolio();
+  renderRiwayat();
+}
+
+function renderHero() {
+  var g = E.ringkasanGlobal(state, prices);
+  var total = g.totalCuan;
+  $('heroTotal').textContent = fmtRp(total, { sign: total > 0 });
+  $('heroTotal').className = 'total-cuan ' + (total > 0 ? 'pos' : total < 0 ? 'neg' : '');
+
+  var nTx = state.transactions.length;
+  var nPos = E.ringkasanPortfolio(state, prices).length;
+  $('heroSub').textContent = nTx === 0
+    ? 'Belum ada transaksi'
+    : nPos + ' saham dipegang · ' + nTx + ' transaksi';
+
+  $('heroModal').textContent = fmtRp(g.modalTertanam);
+  $('heroPasar').textContent = fmtRp(g.nilaiPasarTotal);
+
+  var fEl = $('heroFloat');
+  if (g.floatingPL === null) {
+    fEl.textContent = 'atur harga';
+    fEl.className = 'v';
+  } else {
+    fEl.textContent = fmtRp(g.floatingPL, { sign: g.floatingPL > 0 });
+    fEl.className = 'v ' + (g.floatingPL > 0 ? 'pos' : g.floatingPL < 0 ? 'neg' : '');
+  }
+
+  var rd = g.realizedPL + g.dividen;
+  $('heroReal').textContent = fmtRp(rd, { sign: rd > 0 });
+  $('heroReal').className = 'v ' + (rd > 0 ? 'pos' : rd < 0 ? 'neg' : '');
+}
+
+function renderPortfolio() {
+  var rows = E.ringkasanPortfolio(state, prices);
+  $('portCount').textContent = rows.length;
+  var box = $('portfolioList');
+  box.innerHTML = '';
+
+  if (rows.length === 0) {
+    box.appendChild(emptyState(
+      'Belum ada saham',
+      'Tekan tombol Beli di bawah untuk mencatat pembelian pertama.'
+    ));
+    return;
+  }
+
+  rows.forEach(function (r) {
+    var card = el('div', 'poscard');
+    var plClass = r.floatingPL === null ? '' : (r.floatingPL > 0 ? 'txt-pos' : r.floatingPL < 0 ? 'txt-neg' : '');
+    var plHtml = r.floatingPL === null
+      ? '<div class="big" style="color:var(--abu-300);font-size:13px;font-weight:600">atur harga</div>'
+      : '<div class="big ' + plClass + '">' + fmtRp(r.floatingPL, { sign: r.floatingPL > 0 }) + '</div>'
+        + '<div class="pct ' + plClass + '">' + fmtPct(r.floatingPct, true) + '</div>';
+
+    card.innerHTML =
+      '<div class="poscard-top">'
+      + '<div><div class="kode-badge"><span class="dot"></span>' + r.kode + '</div>'
+      + '<div class="pos-name">' + esc(namaSaham(r.kode) || ('' + r.lot + ' lot')) + '</div></div>'
+      + '<div class="pos-pl">' + plHtml + '</div>'
+      + '</div>'
+      + '<div class="poscard-mid">'
+      + '<div class="m"><div class="k">Lot</div><div class="v">' + fmtNum(r.lot) + '</div></div>'
+      + '<div class="m"><div class="k">Avg</div><div class="v">' + fmtNum(r.avgPrice) + '</div></div>'
+      + '<div class="m"><div class="k">Modal</div><div class="v">' + fmtRp(r.totalCost) + '</div></div>'
+      + (r.hargaSekarang ? '<div class="m"><div class="k">Pasar</div><div class="v">' + fmtNum(r.hargaSekarang) + '</div></div>' : '')
+      + '</div>'
+      + '<div class="poscard-actions">'
+      + '<button class="btn-sell" data-sell="' + r.kode + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7 7 7-7"/></svg>Jual</button>'
+      + '<button class="btn-detail" data-detail="' + r.kode + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.5"/></svg>Detail</button>'
+      + '</div>';
+    box.appendChild(card);
+  });
+
+  box.querySelectorAll('[data-sell]').forEach(function (b) {
+    b.onclick = function () { openJualSheet(b.getAttribute('data-sell')); };
+  });
+  box.querySelectorAll('[data-detail]').forEach(function (b) {
+    b.onclick = function () { openDetailSheet(b.getAttribute('data-detail')); };
+  });
+}
+
+function renderRiwayat() {
+  var box = $('riwayatList');
+  box.innerHTML = '';
+  var txs = state.transactions.slice().sort(function (a, b) {
+    if (a.tgl !== b.tgl) return a.tgl < b.tgl ? 1 : -1;
+    return a.id < b.id ? 1 : -1;
+  });
+  if (txFilter !== 'ALL') txs = txs.filter(function (t) { return t.type === txFilter; });
+
+  if (txs.length === 0) {
+    box.appendChild(emptyState(
+      'Belum ada transaksi',
+      txFilter === 'ALL' ? 'Riwayat beli, jual, dan dividen akan muncul di sini.' : 'Tidak ada transaksi tipe ini.'
+    ));
+    return;
+  }
+
+  txs.forEach(function (t) {
+    box.appendChild(txItem(t));
+  });
+  box.querySelectorAll('[data-del]').forEach(function (b) {
+    b.onclick = function (ev) { ev.stopPropagation(); confirmDelete(b.getAttribute('data-del')); };
+  });
+}
+
+function txItem(t) {
+  var item = el('div', 'tx-item');
+  var icClass, icText, tagClass, tagText, line2, right;
+
+  if (t.type === 'BELI') {
+    icClass = 'beli'; icText = 'B'; tagClass = 'beli'; tagText = 'Beli';
+    line2 = t.lot + ' lot @ ' + fmtNum(t.hargaPerLembar) + (t.fee ? ' · fee ' + fmtRp(t.fee) : '');
+    var totalBeli = t.hargaPerLembar * t.lembar + t.fee;
+    right = '<div class="amt">' + fmtRp(-totalBeli) + '</div>'
+      + (t.sisaLembar < t.lembar ? '<div class="pl" style="color:var(--abu-400)">sisa ' + (t.sisaLembar / 100) + ' lot</div>' : '');
+  } else if (t.type === 'JUAL') {
+    icClass = 'jual'; icText = 'J'; tagClass = 'jual'; tagText = 'Jual';
+    line2 = t.lot + ' lot @ ' + fmtNum(t.hargaPerLembar) + (t.fee ? ' · fee ' + fmtRp(t.fee) : '');
+    var totalJual = t.hargaPerLembar * t.lembar - t.fee;
+    var plCls = t.realizedPL > 0 ? 'txt-pos' : t.realizedPL < 0 ? 'txt-neg' : '';
+    right = '<div class="amt">' + fmtRp(totalJual) + '</div>'
+      + '<div class="pl ' + plCls + '">' + fmtRp(t.realizedPL, { sign: t.realizedPL > 0 }) + '</div>';
+  } else { // DIVIDEN
+    icClass = 'div'; icText = 'D'; tagClass = 'div'; tagText = 'Dividen';
+    line2 = 'Dividen tunai';
+    right = '<div class="amt txt-pos">' + fmtRp(t.totalBersih, { sign: true }) + '</div>';
+  }
+
+  item.innerHTML =
+    '<div class="tx-ic ' + icClass + '">' + icText + '</div>'
+    + '<div class="tx-body">'
+    + '<div class="l1"><b>' + t.kode + '</b><span class="tag ' + tagClass + '">' + tagText + '</span></div>'
+    + '<div class="l2">' + fmtTgl(t.tgl) + ' · ' + line2 + '</div>'
+    + '</div>'
+    + '<div class="tx-right">' + right + '</div>'
+    + '<button class="tx-del" data-del="' + t.id + '" aria-label="Hapus">'
+    + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
+    + '</button>';
+  return item;
+}
+
+function emptyState(title, sub) {
+  var e = el('div', 'empty');
+  e.innerHTML =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>'
+    + '<b>' + title + '</b><span>' + sub + '</span>';
+  return e;
+}
+
+// ============================================================
+// COMBOBOX SAHAM (search dropdown)
+// ============================================================
+var EMITEN_LIST = Object.keys(EMITEN).map(function (k) {
+  return { kode: k, nama: EMITEN[k] };
+});
+
+function buildCombo(container, opts) {
+  opts = opts || {};
+  var selected = opts.value || null;   // kode terpilih
+  var onChange = opts.onChange || function () {};
+
+  container.classList.add('combo');
+  container.innerHTML =
+    '<div class="combo-input" id="' + opts.id + '_wrap">'
+    + '<input type="text" id="' + opts.id + '_inp" placeholder="Cari kode / nama saham…" autocomplete="off" inputmode="text" />'
+    + '<span class="chev">▼</span>'
+    + '</div>'
+    + '<div class="combo-list hidden" id="' + opts.id + '_list"></div>';
+
+  var wrap = $(opts.id + '_wrap');
+  var inp = $(opts.id + '_inp');
+  var list = $(opts.id + '_list');
+
+  function setSelected(kode) {
+    selected = kode;
+    inp.value = kode ? kode + ' — ' + (EMITEN[kode] || '') : '';
+    wrap.classList.remove('err');
+    onChange(kode);
+  }
+  if (selected) setSelected(selected);
+
+  function renderOpts(q) {
+    q = (q || '').trim().toUpperCase();
+    var res;
+    if (!q) {
+      res = EMITEN_LIST.slice(0, 50);
+    } else {
+      var starts = [], contains = [];
+      for (var i = 0; i < EMITEN_LIST.length; i++) {
+        var it = EMITEN_LIST[i];
+        var kk = it.kode, nn = it.nama.toUpperCase();
+        if (kk.indexOf(q) === 0) starts.push(it);
+        else if (kk.indexOf(q) > -1 || nn.indexOf(q) > -1) contains.push(it);
+        if (starts.length >= 50) break;
+      }
+      res = starts.concat(contains).slice(0, 50);
+    }
+    if (res.length === 0) {
+      list.innerHTML = '<div class="combo-empty">Tidak ada saham cocok dengan "' + esc(q) + '"</div>';
+      return;
+    }
+    var html = '';
+    res.forEach(function (it) {
+      var kodeH = it.kode, namaH = esc(it.nama);
+      if (q) {
+        var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'i');
+        kodeH = it.kode.replace(re, '<mark>$1</mark>');
+        namaH = esc(it.nama).replace(re, '<mark>$1</mark>');
+      }
+      html += '<div class="combo-opt" data-kode="' + it.kode + '"><b>' + kodeH + '</b><span>' + namaH + '</span></div>';
+    });
+    list.innerHTML = html;
+    list.querySelectorAll('.combo-opt').forEach(function (o) {
+      o.onclick = function () {
+        setSelected(o.getAttribute('data-kode'));
+        list.classList.add('hidden');
+        inp.blur();
+      };
+    });
+  }
+
+  inp.addEventListener('focus', function () {
+    inp.value = selected ? selected : '';
+    renderOpts(inp.value);
+    list.classList.remove('hidden');
+    setTimeout(function () { inp.select(); }, 10);
+  });
+  inp.addEventListener('input', function () {
+    selected = null;
+    onChange(null);
+    renderOpts(inp.value);
+    list.classList.remove('hidden');
+  });
+  inp.addEventListener('blur', function () {
+    setTimeout(function () {
+      list.classList.add('hidden');
+      // jika user ketik tepat 1 hasil & tdk pilih, biarkan kosong (harus pilih eksplisit)
+      if (selected) inp.value = selected + ' — ' + (EMITEN[selected] || '');
+      else if (inp.value.trim()) {
+        // coba exact match kode
+        var up = inp.value.trim().toUpperCase().split(' ')[0];
+        if (EMITEN[up]) setSelected(up);
+      }
+    }, 180);
+  });
+
+  return {
+    getValue: function () { return selected; },
+    setValue: setSelected,
+    setError: function (on) { wrap.classList.toggle('err', !!on); },
+    focus: function () { inp.focus(); }
+  };
+}
+
+// ============================================================
+// SHEET (modal) generik
+// ============================================================
+function openSheet(title) {
+  $('sheetTitle').textContent = title;
+  $('sheetBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSheet() {
+  $('sheetBg').classList.remove('show');
+  document.body.style.overflow = '';
+  setTimeout(function () { $('sheetBody').innerHTML = ''; }, 250);
+}
+
+// ============================================================
+// FORM BELI
+// ============================================================
+function openBeliSheet(presetKode) {
+  openSheet('Catat Pembelian');
+  var body = $('sheetBody');
+  body.innerHTML =
+    '<div class="field"><label>Saham</label><div id="beliCombo"></div><div class="field-err" id="beliKodeErr">Pilih saham dulu</div></div>'
+    + '<div class="row2">'
+    + '<div class="field"><label>Harga / lembar</label><input class="inp" id="beliHarga" type="number" inputmode="numeric" placeholder="cth 4500" /><div class="field-err" id="beliHargaErr">Harga harus &gt; 0</div></div>'
+    + '<div class="field"><label>Jumlah <span class="hint">lot</span></label><input class="inp" id="beliLot" type="number" inputmode="numeric" placeholder="cth 5" /><div class="field-err" id="beliLotErr">Lot harus &gt; 0</div></div>'
+    + '</div>'
+    + '<div class="row2">'
+    + '<div class="field"><label>Tanggal</label><input class="inp" id="beliTgl" type="date" value="' + E.todayISO() + '" /></div>'
+    + '<div class="field"><label>Fee beli <span class="hint">otomatis</span></label><input class="inp" id="beliFee" type="number" inputmode="numeric" placeholder="0" /></div>'
+    + '</div>'
+    + '<div style="display:flex;gap:7px;margin:-6px 0 14px;flex-wrap:wrap" id="feePreset"></div>'
+    + '<div class="calc" id="beliCalc"></div>'
+    + '<button class="btn-primary" id="beliSubmit">Simpan Pembelian</button>';
+
+  var combo = buildCombo($('beliCombo'), {
+    id: 'beli', value: presetKode || null,
+    onChange: function () { updateBeliCalc(); }
+  });
+
+  // fee preset buttons (rate umum broker)
+  var rates = [{ l: '0%', r: 0 }, { l: '0,1%', r: 0.1 }, { l: '0,15%', r: 0.15 }, { l: '0,19%', r: 0.19 }, { l: '0,25%', r: 0.25 }];
+  var fp = $('feePreset');
+  rates.forEach(function (rt) {
+    var b = el('button', 'chip', 'Fee ' + rt.l);
+    b.type = 'button';
+    b.onclick = function () {
+      var h = parseFloat($('beliHarga').value) || 0;
+      var lot = parseInt($('beliLot').value, 10) || 0;
+      var fee = E.hitungFee(h, lot * 100, rt.r);
+      $('beliFee').value = fee ? Math.round(fee) : '';
+      updateBeliCalc();
+    };
+    fp.appendChild(b);
+  });
+
+  ['beliHarga', 'beliLot', 'beliFee'].forEach(function (id) {
+    $(id).addEventListener('input', updateBeliCalc);
+  });
+  updateBeliCalc();
+
+  function updateBeliCalc() {
+    var h = parseFloat($('beliHarga').value) || 0;
+    var lot = parseInt($('beliLot').value, 10) || 0;
+    var fee = parseFloat($('beliFee').value) || 0;
+    var lembar = lot * 100;
+    var subtotal = h * lembar;
+    var total = subtotal + fee;
+    $('beliCalc').innerHTML =
+      '<div class="calc-row"><span class="k">' + (lot || 0) + ' lot × ' + fmtNum(h) + '</span><span class="v">' + fmtRp(subtotal) + '</span></div>'
+      + '<div class="calc-row"><span class="k">' + fmtNum(lembar) + ' lembar · fee</span><span class="v">' + fmtRp(fee) + '</span></div>'
+      + '<div class="calc-row calc-total"><span class="k">Total keluar</span><span class="v">' + fmtRp(total) + '</span></div>';
+  }
+
+  $('beliSubmit').onclick = function () {
+    var kode = combo.getValue();
+    var h = parseFloat($('beliHarga').value);
+    var lot = parseInt($('beliLot').value, 10);
+    var fee = parseFloat($('beliFee').value) || 0;
+    var tgl = $('beliTgl').value || E.todayISO();
+    var okk = true;
+
+    showErr('beliKodeErr', !kode); combo.setError(!kode);
+    if (!kode) okk = false;
+    var badH = !(h > 0); showErr('beliHargaErr', badH); markInp('beliHarga', badH); if (badH) okk = false;
+    var badL = !(lot > 0); showErr('beliLotErr', badL); markInp('beliLot', badL); if (badL) okk = false;
+    if (fee < 0) { markInp('beliFee', true); okk = false; }
+    if (!okk) return;
+
+    try {
+      E.addBeli(state, { kode: kode, tgl: tgl, hargaPerLembar: h, lot: lot, fee: fee });
+      save(); renderAll(); closeSheet();
+      toast(lot + ' lot ' + kode + ' tercatat', 'ok');
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  };
+}
+
+// ============================================================
+// FORM JUAL (pilih lot)
+// ============================================================
+function openJualSheet(presetKode) {
+  openSheet('Catat Penjualan');
+  var body = $('sheetBody');
+  body.innerHTML =
+    '<div class="field"><label>Saham</label><div id="jualCombo"></div><div class="field-err" id="jualKodeErr">Pilih saham yang kamu pegang</div></div>'
+    + '<div id="jualLotArea"></div>';
+
+  var combo = buildCombo($('jualCombo'), {
+    id: 'jual', value: presetKode || null,
+    onChange: function (kode) { renderJualLots(kode); }
+  });
+  if (presetKode) renderJualLots(presetKode);
+
+  function renderJualLots(kode) {
+    var area = $('jualLotArea');
+    if (!kode) { area.innerHTML = ''; return; }
+    var lots = E.lotTerbuka(state, kode);
+    if (lots.length === 0) {
+      area.innerHTML = '<div class="empty" style="margin-top:6px"><b>Tidak ada lot ' + kode + '</b><span>Kamu belum memegang saham ini, atau semua sudah terjual.</span></div>';
+      return;
+    }
+
+    area.innerHTML =
+      '<div class="row2">'
+      + '<div class="field"><label>Harga jual / lembar</label><input class="inp" id="jualHarga" type="number" inputmode="numeric" placeholder="cth 5000" /><div class="field-err" id="jualHargaErr">Harga harus &gt; 0</div></div>'
+      + '<div class="field"><label>Tanggal</label><input class="inp" id="jualTgl" type="date" value="' + E.todayISO() + '" /></div>'
+      + '</div>'
+      + '<div class="field"><label>Fee jual <span class="hint">total, dibagi proporsional</span></label><input class="inp" id="jualFee" type="number" inputmode="numeric" placeholder="0" /></div>'
+      + '<label style="font-size:12.5px;font-weight:600;color:var(--abu-700);margin-bottom:8px;display:block">Pilih lot yang dijual</label>'
+      + '<div class="lot-tools">'
+      + '<button class="lot-tool" type="button" id="toolFifo"><span>FIFO</span><small>terlama dulu</small></button>'
+      + '<button class="lot-tool" type="button" id="toolProfit"><span>Paling untung</span><small>gain tertinggi</small></button>'
+      + '<button class="lot-tool" type="button" id="toolClear"><span>Reset</span><small>kosongkan</small></button>'
+      + '</div>'
+      + '<div id="lotCards"></div>'
+      + '<div class="calc" id="jualCalc"></div>'
+      + '<button class="btn-primary danger" id="jualSubmit">Simpan Penjualan</button>';
+
+    // state qty per lot (dalam lot)
+    var qty = {}; lots.forEach(function (l) { qty[l.id] = 0; });
+
+    function curHarga() { return parseFloat($('jualHarga').value) || 0; }
+    function curFee() { return parseFloat($('jualFee').value) || 0; }
+
+    function renderCards() {
+      var h = curHarga();
+      var box = $('lotCards');
+      box.innerHTML = '';
+      lots.forEach(function (l) {
+        var cpl = E.costPerLembar(l);
+        var lotTersedia = l.sisaLembar / 100;
+        var plPerLot = h > 0 ? (h - cpl) * 100 : null;
+        var picked = qty[l.id] > 0;
+        var card = el('div', 'lotcard' + (picked ? ' picked' : ''));
+        var plHtml = plPerLot === null ? '<span style="color:var(--abu-400)">—</span>'
+          : '<span class="' + (plPerLot >= 0 ? 'txt-pos' : 'txt-neg') + '">' + fmtRp(plPerLot * lotTersedia, { sign: plPerLot >= 0 }) + '</span>';
+        card.innerHTML =
+          '<div class="lotcard-top">'
+          + '<div class="lotcard-date">' + fmtTgl(l.tgl) + '<small>beli @ ' + fmtNum(l.hargaPerLembar) + (l.fee ? ' +fee' : '') + '</small></div>'
+          + '<div class="lotcard-pl">' + plHtml + '</div>'
+          + '</div>'
+          + '<div class="lotcard-mid"><span>Tersedia: <b>' + lotTersedia + ' lot</b></span><span>Modal/lb: <b>' + fmtNum(Math.round(cpl)) + '</b></span></div>'
+          + '<div class="lot-qty"><label>Jual berapa lot?</label>'
+          + '<div class="stepper">'
+          + '<button type="button" data-dec="' + l.id + '">−</button>'
+          + '<input type="number" inputmode="numeric" id="q_' + l.id + '" value="' + qty[l.id] + '" min="0" max="' + lotTersedia + '" />'
+          + '<button type="button" data-inc="' + l.id + '">+</button>'
+          + '</div></div>';
+        box.appendChild(card);
+      });
+
+      box.querySelectorAll('[data-inc]').forEach(function (b) {
+        b.onclick = function () {
+          var id = b.getAttribute('data-inc');
+          var max = lots.find(function (x) { return x.id === id; }).sisaLembar / 100;
+          if (qty[id] < max) qty[id]++;
+          renderCards(); updateCalc();
+        };
+      });
+      box.querySelectorAll('[data-dec]').forEach(function (b) {
+        b.onclick = function () {
+          var id = b.getAttribute('data-dec');
+          if (qty[id] > 0) qty[id]--;
+          renderCards(); updateCalc();
+        };
+      });
+      box.querySelectorAll('input[id^="q_"]').forEach(function (inp) {
+        function applyQty() {
+          var id = inp.id.slice(2);
+          var max = lots.find(function (x) { return x.id === id; }).sisaLembar / 100;
+          var v = parseInt(inp.value, 10);
+          if (isNaN(v) || v < 0) v = 0;
+          if (v > max) { v = max; inp.value = max; }
+          qty[id] = v;
+          updateCalc();
+        }
+        inp.oninput = applyQty;
+        inp.onchange = function () { applyQty(); renderCards(); };
+      });
+    }
+
+    function updateCalc() {
+      var h = curHarga();
+      var fee = curFee();
+      var totalLot = 0, totalLembar = 0;
+      for (var id in qty) { totalLot += qty[id]; }
+      totalLembar = totalLot * 100;
+
+      // hitung estimasi realized
+      var realized = null, proceeds = null;
+      if (h > 0 && totalLembar > 0) {
+        var feePerLb = fee / totalLembar;
+        realized = 0; proceeds = 0;
+        lots.forEach(function (l) {
+          if (qty[l.id] > 0) {
+            var lb = qty[l.id] * 100;
+            var cpl = E.costPerLembar(l);
+            var prc = h * lb - feePerLb * lb;
+            realized += prc - cpl * lb;
+            proceeds += prc;
+          }
+        });
+      }
+
+      var c = $('jualCalc');
+      if (totalLot === 0) {
+        c.innerHTML = '<div class="calc-row"><span class="k">Belum ada lot dipilih</span><span class="v">—</span></div>';
+      } else {
+        var plCls = realized === null ? '' : (realized >= 0 ? 'txt-pos' : 'txt-neg');
+        c.innerHTML =
+          '<div class="calc-row"><span class="k">Total dijual</span><span class="v">' + totalLot + ' lot (' + fmtNum(totalLembar) + ' lb)</span></div>'
+          + '<div class="calc-row"><span class="k">Uang masuk (net fee)</span><span class="v">' + fmtRp(proceeds) + '</span></div>'
+          + '<div class="calc-row calc-total"><span class="k">Estimasi untung/rugi</span><span class="v ' + plCls + '">' + (realized === null ? '—' : fmtRp(realized, { sign: realized >= 0 })) + '</span></div>';
+      }
+
+      $('jualSubmit').disabled = !(h > 0 && totalLot > 0);
+    }
+
+    // tools
+    $('toolFifo').onclick = function () {
+      var totalAvail = lots.reduce(function (s, l) { return s + l.sisaLembar / 100; }, 0);
+      var res = E.buatPilihanOtomatis(state, kode, totalAvail, 'FIFO');
+      for (var id in qty) qty[id] = 0;
+      res.pilihan.forEach(function (p) { qty[p.beliId] = p.lot; });
+      renderCards(); updateCalc();
+      toast('Terisi FIFO: semua ' + totalAvail + ' lot', 'ok');
+    };
+    $('toolProfit').onclick = function () {
+      var h = curHarga();
+      if (!(h > 0)) { toast('Isi harga jual dulu untuk hitung gain', 'err'); return; }
+      var totalAvail = lots.reduce(function (s, l) { return s + l.sisaLembar / 100; }, 0);
+      var res = E.buatPilihanOtomatis(state, kode, totalAvail, 'PROFIT', h);
+      for (var id in qty) qty[id] = 0;
+      // hanya isi lot yang untung (gain>0), urut paling untung
+      res.pilihan.forEach(function (p) {
+        var lot = lots.find(function (x) { return x.id === p.beliId; });
+        if ((h - E.costPerLembar(lot)) > 0) qty[p.beliId] = p.lot;
+      });
+      var totIsi = 0; for (var k in qty) totIsi += qty[k];
+      renderCards(); updateCalc();
+      toast(totIsi > 0 ? 'Terisi lot yang untung dulu' : 'Tidak ada lot yang untung di harga ini', totIsi > 0 ? 'ok' : 'err');
+    };
+    $('toolClear').onclick = function () {
+      for (var id in qty) qty[id] = 0;
+      renderCards(); updateCalc();
+    };
+
+    ['jualHarga', 'jualFee'].forEach(function (id) {
+      $(id).addEventListener('input', function () { renderCards(); updateCalc(); });
+    });
+
+    renderCards();
+    updateCalc();
+
+    $('jualSubmit').onclick = function () {
+      var h = parseFloat($('jualHarga').value);
+      var fee = parseFloat($('jualFee').value) || 0;
+      var tgl = $('jualTgl').value || E.todayISO();
+      if (!(h > 0)) { showErr('jualHargaErr', true); markInp('jualHarga', true); return; }
+      var pilihan = [];
+      for (var id in qty) { if (qty[id] > 0) pilihan.push({ beliId: id, lot: qty[id] }); }
+      if (pilihan.length === 0) { toast('Pilih minimal 1 lot', 'err'); return; }
+      try {
+        var tx = E.addJual(state, { kode: kode, tgl: tgl, hargaPerLembar: h, fee: fee, pilihan: pilihan });
+        save(); renderAll(); closeSheet();
+        var msg = tx.lot + ' lot ' + kode + ' terjual · ' + (tx.realizedPL >= 0 ? 'untung ' : 'rugi ') + fmtRp(Math.abs(tx.realizedPL));
+        toast(msg, tx.realizedPL >= 0 ? 'ok' : 'err');
+      } catch (e) {
+        toast(e.message, 'err');
+      }
+    };
+  }
+}
+
+// ============================================================
+// FORM DIVIDEN
+// ============================================================
+function openDividenSheet(presetKode) {
+  openSheet('Catat Dividen');
+  var body = $('sheetBody');
+  body.innerHTML =
+    '<div class="field"><label>Saham</label><div id="divCombo"></div><div class="field-err" id="divKodeErr">Pilih saham</div></div>'
+    + '<div class="row2">'
+    + '<div class="field"><label>Total diterima <span class="hint">bersih</span></label><input class="inp" id="divNom" type="number" inputmode="numeric" placeholder="cth 50000" /><div class="field-err" id="divNomErr">Nominal harus &gt; 0</div></div>'
+    + '<div class="field"><label>Tanggal</label><input class="inp" id="divTgl" type="date" value="' + E.todayISO() + '" /></div>'
+    + '</div>'
+    + '<button class="btn-primary" id="divSubmit" style="background:linear-gradient(135deg,var(--hijau),#08824c)">Simpan Dividen</button>';
+
+  var combo = buildCombo($('divCombo'), { id: 'div', value: presetKode || null, onChange: function () {} });
+
+  $('divSubmit').onclick = function () {
+    var kode = combo.getValue();
+    var nom = parseFloat($('divNom').value);
+    var tgl = $('divTgl').value || E.todayISO();
+    var okk = true;
+    showErr('divKodeErr', !kode); combo.setError(!kode); if (!kode) okk = false;
+    var badN = !(nom > 0); showErr('divNomErr', badN); markInp('divNom', badN); if (badN) okk = false;
+    if (!okk) return;
+    try {
+      E.addDividen(state, { kode: kode, tgl: tgl, totalBersih: nom });
+      save(); renderAll(); closeSheet();
+      toast('Dividen ' + kode + ' tercatat', 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  };
+}
+
+// ============================================================
+// DETAIL SAHAM (lot terbuka + set harga)
+// ============================================================
+function openDetailSheet(kode) {
+  openSheet(kode + ' — Detail');
+  var body = $('sheetBody');
+  var rows = E.ringkasanPortfolio(state, prices).filter(function (r) { return r.kode === kode; });
+  var r = rows[0];
+  var lots = E.lotTerbuka(state, kode);
+
+  var html =
+    '<div style="font-size:12.5px;color:var(--abu-500);margin:-4px 0 14px">' + esc(namaSaham(kode)) + '</div>'
+    + '<div class="detail-sum"><div class="detail-sum-grid">'
+    + '<div class="c"><div class="k">Total Lot</div><div class="v">' + fmtNum(r.lot) + '</div></div>'
+    + '<div class="c"><div class="k">Harga Avg</div><div class="v">' + fmtNum(r.avgPrice) + '</div></div>'
+    + '<div class="c"><div class="k">Modal</div><div class="v">' + fmtRp(r.totalCost) + '</div></div>'
+    + '<div class="c"><div class="k">Floating P/L</div><div class="v ' + (r.floatingPL === null ? '' : r.floatingPL >= 0 ? 'txt-pos' : 'txt-neg') + '">' + (r.floatingPL === null ? '—' : fmtRp(r.floatingPL, { sign: r.floatingPL >= 0 })) + '</div></div>'
+    + '</div></div>'
+    + '<div class="field"><label>Harga sekarang <span class="hint">untuk floating P/L</span></label>'
+    + '<div class="row2"><input class="inp" id="detHarga" type="number" inputmode="numeric" placeholder="harga / lembar" value="' + (prices[kode] || '') + '" />'
+    + '<button class="btn-primary" id="detSetHarga" style="padding:12px">Simpan</button></div></div>'
+    + '<label style="font-size:12.5px;font-weight:600;color:var(--abu-700);margin:6px 0 8px;display:block">Lot terbuka (' + lots.length + ')</label>';
+
+  lots.forEach(function (l) {
+    var cpl = E.costPerLembar(l);
+    var h = prices[kode];
+    var pl = h > 0 ? (h - cpl) * l.sisaLembar : null;
+    html += '<div class="lot-row"><div class="li">' + fmtTgl(l.tgl) + '<br><small>' + (l.sisaLembar / 100) + ' lot @ ' + fmtNum(l.hargaPerLembar) + '</small></div>'
+      + '<div class="li" style="text-align:right">' + (pl === null ? '<small>set harga</small>' : '<span class="' + (pl >= 0 ? 'txt-pos' : 'txt-neg') + '">' + fmtRp(pl, { sign: pl >= 0 }) + '</span>') + '<br><small>modal ' + fmtRp(cpl * l.sisaLembar) + '</small></div></div>';
+  });
+
+  html += '<div style="display:flex;gap:9px;margin-top:18px">'
+    + '<button class="btn-primary" id="detJual" style="background:linear-gradient(135deg,var(--merah),#c43030)">Jual ' + kode + '</button>'
+    + '<button class="btn-primary" id="detDiv" style="background:linear-gradient(135deg,var(--hijau),#08824c)">+ Dividen</button>'
+    + '</div>';
+
+  body.innerHTML = html;
+
+  $('detSetHarga').onclick = function () {
+    var h = parseFloat($('detHarga').value);
+    if (h > 0) { prices[kode] = h; save(); renderAll(); openDetailSheet(kode); toast('Harga ' + kode + ' disimpan', 'ok'); }
+    else { delete prices[kode]; save(); renderAll(); openDetailSheet(kode); toast('Harga dihapus', 'ok'); }
+  };
+  $('detJual').onclick = function () { openJualSheet(kode); };
+  $('detDiv').onclick = function () { openDividenSheet(kode); };
+}
+
+// ============================================================
+// ATUR HARGA MASSAL
+// ============================================================
+function openHargaSheet() {
+  var rows = E.ringkasanPortfolio(state, prices);
+  openSheet('Atur Harga Sekarang');
+  var body = $('sheetBody');
+  if (rows.length === 0) {
+    body.innerHTML = '<div class="empty"><b>Belum ada saham</b><span>Catat pembelian dulu untuk mengatur harga pasar.</span></div>';
+    return;
+  }
+  var html = '<div style="font-size:12.5px;color:var(--abu-600);margin:-4px 0 14px">Isi harga pasar terkini tiap saham untuk melihat floating P/L. Kosongkan jika tidak ingin dihitung.</div>';
+  rows.forEach(function (r) {
+    html += '<div class="field"><label>' + r.kode + ' <span class="hint">' + esc((namaSaham(r.kode) || '').slice(0, 28)) + '</span></label>'
+      + '<input class="inp price-inp" data-kode="' + r.kode + '" type="number" inputmode="numeric" placeholder="harga / lembar" value="' + (prices[r.kode] || '') + '" /></div>';
+  });
+  html += '<button class="btn-primary" id="hargaSave">Simpan Semua Harga</button>';
+  body.innerHTML = html;
+
+  $('hargaSave').onclick = function () {
+    body.querySelectorAll('.price-inp').forEach(function (inp) {
+      var k = inp.getAttribute('data-kode');
+      var v = parseFloat(inp.value);
+      if (v > 0) prices[k] = v; else delete prices[k];
+    });
+    save(); renderAll(); closeSheet();
+    toast('Harga pasar diperbarui', 'ok');
+  };
+}
+
+// ============================================================
+// TOAST & CONFIRM
+// ============================================================
+var toastTimer;
+function toast(msg, type) {
+  var wrap = $('toastWrap');
+  var t = el('div', 'toast ' + (type || ''));
+  var ic = type === 'ok'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'
+    : type === 'err'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'
+      : '';
+  t.innerHTML = ic + '<span>' + esc(msg) + '</span>';
+  wrap.appendChild(t);
+  requestAnimationFrame(function () { t.classList.add('show'); });
+  setTimeout(function () {
+    t.classList.remove('show');
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 2600);
+}
+
+var confirmCb = null;
+function showConfirm(title, msg, okLabel, cb, blue) {
+  $('confirmTitle').textContent = title;
+  $('confirmMsg').textContent = msg;
+  $('confirmOk').textContent = okLabel || 'Hapus';
+  $('confirmOk').className = 'c-ok' + (blue ? ' blue' : '');
+  confirmCb = cb;
+  $('confirmBg').classList.add('show');
+}
+function hideConfirm() { $('confirmBg').classList.remove('show'); confirmCb = null; }
+
+function confirmDelete(txId) {
+  var tx = state.transactions.find(function (t) { return t.id === txId; });
+  if (!tx) return;
+  var label = tx.type === 'BELI' ? 'pembelian' : tx.type === 'JUAL' ? 'penjualan' : 'dividen';
+  var extra = '';
+  if (tx.type === 'BELI' && tx.sisaLembar !== tx.lembar)
+    extra = ' Sebagian/seluruh lot ini sudah terjual — hapus transaksi jualnya dulu.';
+  if (tx.type === 'JUAL') extra = ' Lot yang terjual akan dikembalikan ke portfolio.';
+  showConfirm('Hapus ' + label + '?',
+    tx.kode + ' · ' + fmtTgl(tx.tgl) + '.' + extra,
+    'Hapus',
+    function () {
+      try {
+        E.hapusTransaksi(state, txId);
+        save(); renderAll();
+        toast('Transaksi dihapus', 'ok');
+      } catch (e) { toast(e.message, 'err'); }
+    });
+}
+
+// ============================================================
+// EXPORT / IMPORT / RESET
+// ============================================================
+function doExport() {
+  var data = { version: 1, exportedAt: new Date().toISOString(), state: state, prices: prices };
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'jurnal-saham-' + E.todayISO() + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  toast('Backup diunduh', 'ok');
+}
+function doImport() {
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'application/json,.json';
+  inp.onchange = function () {
+    var f = inp.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var data = JSON.parse(rd.result);
+        var st = data.state || data;
+        if (!st || !Array.isArray(st.transactions)) throw new Error('Format tidak dikenal');
+        showConfirm('Pulihkan data?', 'Data saat ini akan diganti dengan isi file backup. Lanjutkan?', 'Pulihkan', function () {
+          state = st;
+          prices = data.prices || {};
+          save(); renderAll();
+          toast('Data dipulihkan', 'ok');
+        }, true);
+      } catch (e) { toast('Gagal baca file: ' + e.message, 'err'); }
+    };
+    rd.readAsText(f);
+  };
+  inp.click();
+}
+function doReset() {
+  showConfirm('Hapus semua data?', 'Seluruh transaksi & harga akan dihapus permanen dari perangkat ini. Tidak bisa dibatalkan.', 'Hapus Semua', function () {
+    state = E.emptyState(); prices = {};
+    save(); renderAll();
+    toast('Semua data dihapus', 'ok');
+  });
+}
+
+// ============================================================
+// EVENT BINDINGS
+// ============================================================
+function bind() {
+  $('openBeli').onclick = function () { openBeliSheet(); };
+  $('openJual').onclick = function () { openJualSheet(); };
+  $('sheetClose').onclick = closeSheet;
+  $('sheetBg').onclick = function (e) { if (e.target === $('sheetBg')) closeSheet(); };
+
+  // tabs
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.onclick = function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+      t.classList.add('active');
+      currentTab = t.getAttribute('data-tab');
+      $('viewPortfolio').classList.toggle('hidden', currentTab !== 'portfolio');
+      $('viewRiwayat').classList.toggle('hidden', currentTab !== 'riwayat');
+    };
+  });
+
+  // chips
+  document.querySelectorAll('#txChips .chip').forEach(function (c) {
+    c.onclick = function () {
+      document.querySelectorAll('#txChips .chip').forEach(function (x) { x.classList.remove('on'); });
+      c.classList.add('on');
+      txFilter = c.getAttribute('data-f');
+      renderRiwayat();
+    };
+  });
+
+  // menu
+  $('menuBtn').onclick = function (e) {
+    e.stopPropagation();
+    $('menuPop').classList.toggle('show');
+  };
+  document.addEventListener('click', function () { $('menuPop').classList.remove('show'); });
+  $('menuPop').onclick = function (e) { e.stopPropagation(); };
+  document.querySelectorAll('#menuPop .menu-item').forEach(function (m) {
+    m.onclick = function () {
+      $('menuPop').classList.remove('show');
+      var act = m.getAttribute('data-act');
+      if (act === 'harga') openHargaSheet();
+      else if (act === 'export') doExport();
+      else if (act === 'import') doImport();
+      else if (act === 'reset') doReset();
+    };
+  });
+
+  // confirm
+  $('confirmCancel').onclick = hideConfirm;
+  $('confirmBg').onclick = function (e) { if (e.target === $('confirmBg')) hideConfirm(); };
+  $('confirmOk').onclick = function () { var cb = confirmCb; hideConfirm(); if (cb) cb(); };
+
+  // back button handling (Android / browser)
+  window.addEventListener('popstate', function () {
+    if ($('sheetBg').classList.contains('show')) { closeSheet(); pushBlocker(); }
+    else if ($('confirmBg').classList.contains('show')) { hideConfirm(); pushBlocker(); }
+    else if ($('menuPop').classList.contains('show')) { $('menuPop').classList.remove('show'); pushBlocker(); }
+  });
+}
+function pushBlocker() { try { history.pushState({ j: 1 }, ''); } catch (e) {} }
+
+// ============================================================
+// PWA — service worker + banner install iOS
+// ============================================================
+function setupPWA() {
+  // daftarkan service worker (hanya jalan di http/https, bukan file://)
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+
+  // banner "tambah ke layar utama" khusus iOS Safari
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  var isStandalone = ('standalone' in navigator && navigator.standalone) ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  var dismissed = false;
+  try { dismissed = localStorage.getItem('jurnalSaham_iosHint') === '1'; } catch (e) {}
+
+  if (isIOS && !isStandalone && !dismissed) {
+    setTimeout(function () {
+      var b = $('iosInstall');
+      if (b) b.classList.add('show');
+    }, 1600);
+  }
+  var closeBtn = $('iosInstallClose');
+  if (closeBtn) closeBtn.onclick = function () {
+    $('iosInstall').classList.remove('show');
+    try { localStorage.setItem('jurnalSaham_iosHint', '1'); } catch (e) {}
+  };
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  load();
+  bind();
+  renderAll();
+  setupPWA();
+  pushBlocker();
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else { init(); }
+
+// expose untuk test browser
+window.__jurnal = { get state() { return state; }, get prices() { return prices; }, renderAll: renderAll, E: E };
+})();
+
+</script>
+
+</body>
+</html>
